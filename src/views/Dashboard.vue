@@ -1,5 +1,6 @@
 <template>
   <div class="animated fadeIn">
+
     <b-row>
       <b-col sm="6" lg="3">
         <b-card no-body class="bg-primary">
@@ -78,6 +79,49 @@
     <b-card>
       <b-row>
         <b-col sm="5">
+          <h4 id="traffic" class="card-title mb-0">Статистика проката, сентябрь 2018</h4>
+          <div class="small text-muted">Стартов проката</div>
+        </b-col>
+        <b-col sm="7" class="d-none d-md-block">
+          <!-- <b-button type="button" variant="primary" class="float-right"><i class="icon-cloud-download"></i></b-button> -->
+          <b-button-toolbar class="float-right" aria-label="Toolbar with buttons group">
+            <b-form-radio-group class="mr-3" id="radiosBtn" buttons button-variant="outline-secondary" v-model="selected" name="radiosBtn">
+              <b-form-radio class="mx-0" value="Day">День</b-form-radio>
+              <b-form-radio class="mx-0" value="Month">Месяц</b-form-radio>
+              <b-form-radio class="mx-0" value="Year">Год</b-form-radio>
+            </b-form-radio-group>
+          </b-button-toolbar>
+        </b-col>
+      </b-row>
+      <main-2-chart-example 
+        chartId="main-chart-01"
+        class="chart-wrapper" 
+        style="height:150px;margin:10px 0 40px;" 
+        height="100" 
+      ></main-2-chart-example>
+
+      <div>Часов проката в день</div>
+      <rent-hours-chart 
+        chartId="main-chart-02"
+        class="chart-wrapper" 
+        style="height:150px;margin:10px 0 40px;"  
+        height="100" 
+      ></rent-hours-chart>
+
+
+      <div>Выручка в день</div>
+      <main-2-chart-example 
+        chartId="main-chart-03"
+        class="chart-wrapper" 
+        style="height:150px;margin:10px 0 40px;" 
+        height="100" 
+      ></main-2-chart-example>
+
+    </b-card>
+
+    <!--     <b-card>
+      <b-row>
+        <b-col sm="5">
           <h4 id="traffic" class="card-title mb-0">Traffic</h4>
           <div class="small text-muted">November 2017</div>
         </b-col>
@@ -122,7 +166,8 @@
           </b-col>
         </b-row>
       </div>
-    </b-card>
+    </b-card> -->
+
     <b-row>
       <b-col sm="6" lg="3">
         <div class="brand-card">
@@ -454,6 +499,8 @@ import CardLine2ChartExample from './dashboard/CardLine2ChartExample'
 import CardLine3ChartExample from './dashboard/CardLine3ChartExample'
 import CardBarChartExample from './dashboard/CardBarChartExample'
 import MainChartExample from './dashboard/MainChartExample'
+import Main2ChartExample from './dashboard/Main2ChartExample'
+import RentHoursChart from './dashboard/RentHoursChart'
 import SocialBoxChartExample from './dashboard/SocialBoxChartExample'
 import CalloutChartExample from './dashboard/CalloutChartExample'
 import { Callout } from '@coreui/vue'
@@ -467,6 +514,8 @@ export default {
     CardLine3ChartExample,
     CardBarChartExample,
     MainChartExample,
+    Main2ChartExample,
+    RentHoursChart,
     SocialBoxChartExample,
     CalloutChartExample
   },
@@ -564,6 +613,11 @@ export default {
     },
     flag (value) {
       return 'flag-icon flag-icon-' + value
+    }
+  },
+  computed: {
+    subOrders() {
+      return this.$store.getters.subOrders
     }
   }
 }

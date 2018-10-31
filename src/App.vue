@@ -4,7 +4,10 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  beforeCreate() {
+    this.$store.dispatch('send')
+  }
 }
 </script>
 
