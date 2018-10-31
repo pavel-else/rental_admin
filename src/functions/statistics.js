@@ -37,8 +37,6 @@ export const getRentCash = (subOrders) => {
     if (dayNumber) {
       monthMap[dayNumber]['cash'] += +i.bill_rent + +i.bill_access
     }
-
-    console.log('cash', makeArray(monthMap, 'cash'))
   })
 
   return makeArray(monthMap, 'cash')

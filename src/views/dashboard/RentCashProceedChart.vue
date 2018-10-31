@@ -82,6 +82,7 @@ export default {
   
   computed: {
       subOrders() {
+        console.log(this.$store.getters.statistics({cmd: 'cash'}))
         return this.$store.getters.subOrders
       }
   },

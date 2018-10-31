@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import history from './history'
 import subOrders from './subOrders'
+import statistics from './statistics'
 
 
 Vue.use(Vuex)
@@ -10,7 +11,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     history,
-    subOrders
+    subOrders,
+    statistics
   },
 
   actions: {
