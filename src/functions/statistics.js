@@ -29,6 +29,21 @@ export const getRentHours = (subOrders) => {
   return makeArray(monthMap, 'hours')
 }
 
+export const getRentCash = (subOrders) => {
+  const monthMap = createMonthMap(9)
+
+  subOrders.map(i => {
+    const dayNumber = getDayNumber(i.start_time, monthMap)
+    if (dayNumber) {
+      monthMap[dayNumber]['cash'] += +i.bill_rent + +i.bill_access
+    }
+
+    console.log('cash', makeArray(monthMap, 'cash'))
+  })
+
+  return makeArray(monthMap, 'cash')
+}
+
 const getDayNumber = (date, monthMap) => {
   const timeStamp = Date.parse(date)
 
@@ -49,6 +64,7 @@ const createMonthMap = (monthNumber) => {
     monthMap[day].max = Date.parse(`2018-${monthNumber}-${day} 23:59`)
     monthMap[day].count = 0
     monthMap[day].hours = 0
+    monthMap[day].cash = 0
   }
   
   return monthMap

@@ -80,7 +80,7 @@
       <b-row>
         <b-col sm="5">
           <h4 id="traffic" class="card-title mb-0">Статистика проката, сентябрь 2018</h4>
-          <div class="small text-muted">Стартов проката</div>
+          <!-- <div class="small text-muted">Стартов проката</div> -->
         </b-col>
         <b-col sm="7" class="d-none d-md-block">
           <!-- <b-button type="button" variant="primary" class="float-right"><i class="icon-cloud-download"></i></b-button> -->
@@ -93,12 +93,14 @@
           </b-button-toolbar>
         </b-col>
       </b-row>
-      <main-2-chart-example 
+
+      <div>Стартов проката</div>
+      <rent-count 
         chartId="main-chart-01"
         class="chart-wrapper" 
         style="height:150px;margin:10px 0 40px;" 
         height="100" 
-      ></main-2-chart-example>
+      ></rent-count>
 
       <div>Часов проката в день</div>
       <rent-hours-chart 
@@ -110,12 +112,13 @@
 
 
       <div>Выручка в день</div>
-      <main-2-chart-example 
+      <rent-cash-proceed-chart 
         chartId="main-chart-03"
         class="chart-wrapper" 
         style="height:150px;margin:10px 0 40px;" 
         height="100" 
-      ></main-2-chart-example>
+      ></rent-cash-proceed-chart>
+      <div>Всего</div>
 
     </b-card>
 
@@ -499,8 +502,9 @@ import CardLine2ChartExample from './dashboard/CardLine2ChartExample'
 import CardLine3ChartExample from './dashboard/CardLine3ChartExample'
 import CardBarChartExample from './dashboard/CardBarChartExample'
 import MainChartExample from './dashboard/MainChartExample'
-import Main2ChartExample from './dashboard/Main2ChartExample'
+import RentCount from './dashboard/RentCount'
 import RentHoursChart from './dashboard/RentHoursChart'
+import RentCashProceedChart from './dashboard/RentCashProceedChart'
 import SocialBoxChartExample from './dashboard/SocialBoxChartExample'
 import CalloutChartExample from './dashboard/CalloutChartExample'
 import { Callout } from '@coreui/vue'
@@ -514,8 +518,9 @@ export default {
     CardLine3ChartExample,
     CardBarChartExample,
     MainChartExample,
-    Main2ChartExample,
+    RentCount,
     RentHoursChart,
+    RentCashProceedChart,
     SocialBoxChartExample,
     CalloutChartExample
   },
