@@ -3,7 +3,6 @@ import { Line } from 'vue-chartjs'
 import { Bar } from 'vue-chartjs'
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips'
-import { getRentCount } from '@/functions/statistics.js'
 
 function random (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
@@ -41,8 +40,7 @@ export default {
             borderColor: brandInfo,
             pointHoverBackgroundColor: '#fff',
             borderWidth: 2,
-            // data: data1
-            data: getRentCount(this.subOrders)
+            data: this.$store.getters.statistics({cmd: 'getCount', from: '2018-09-01', to: '2018-09-30', id: '8800000001'})
           }
         ]
       }, 

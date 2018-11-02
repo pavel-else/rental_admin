@@ -1,4 +1,6 @@
 import {writeLog} from '@/functions/logs'
+import makeShortDate from '@/functions/makeShortDate'
+
 export default {
   state: {
     statistics: {}
@@ -14,7 +16,6 @@ export default {
         return {}
       }
 
-
       const statistics = subOrders.reduce((acc, item) => {
         const order = orders.find(i => i.order_id === item.order_id)
 
@@ -27,22 +28,17 @@ export default {
           return acc
         }
 
-        const objectDate = new Date(order.start_time)
-        const year = objectDate.getFullYear()
-        const month = objectDate.getMonth() + 1 <= 9 ? '0' + objectDate.getMonth() + 1 : objectDate.getMonth() + 1
-        const date = objectDate.getDate()
+        const date = makeShortDate(order.start_time)
 
-        const day = (year && month && date) ? `${year}-${month}-${date}` : undefined
-
-        if (!day) {
-          writeLog('State, setStatstics', 'error to parse date', {year, month, date})
+        if (!date) {
+          writeLog('State, setStatstics', 'error to parse date', order.start_time)
           return acc
         }
 
-        if (acc[day]) {
-          acc[day].push(item)
+        if (acc[date]) {
+          acc[date].push(item)
         } else {
-          acc[day] = [item]
+          acc[date] = [item]
         }
 
         return acc
@@ -52,9 +48,16 @@ export default {
     }
   },
   getters: {
-    statistics: state => ({from, to, id }) => {
+    statistics: state => ({cmd, from, to, id }) => {
+      const select = (from, to, id) => {
+
+      }
+      switch (cmd) {
+        case 'getCount' : getRentCount()
+      }
 
     }
   }
-  // this.$store.getters.statistics('cashTotal', '2018-09-01 00:00', '2018-09-30 23:59', 8800000001) // 15890 
 }
+
+const getRentCount = () => {}
