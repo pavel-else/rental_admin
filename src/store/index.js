@@ -53,6 +53,7 @@ export default new Vuex.Store({
 
         commit('setHistory', r.data.history)
         commit('setSubOrders', {subOrders: r.data.sub_orders, orders: r.data.history})
+        commit('setStatistics', {subOrders: r.data.sub_orders, orders: r.data.history})
       })
     }
   },
