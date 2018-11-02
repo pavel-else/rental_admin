@@ -1,25 +1,7 @@
 import {writeLog} from '@/functions/logs'
 export default {
   state: {
-    statistics: {
-      '2018-09-01' : [],
-      '2018-09-01' : []
-    }
-
-    //   dates: ['2018-09-01', '2018-09-02', '2018-09-03'],
-    //   rentCount: {
-    //     8800000001: [20, 22, 8],
-    //     9900000002: [0, 0, 0]
-    //   },
-    //   rentHours: {
-    //     8800000001: [17.6, 22.4, 11.1],
-    //     9900000002: [0, 0, 0]
-    //   },
-    //   rentCash: {
-    //     8800000001: [2200, 3220, 1540],
-    //     9900000002: [0, 0, 0]
-    //   }
-    // }
+    statistics: {}
   },
   mutations: {
     /*
@@ -27,17 +9,25 @@ export default {
      * statistics: {'2018-09-01': [{subOrder1}, subOrder2, ...], '2018-09-02': [{subOrder3}, subOrder4, ...], ...}
      */
     setStatistics(state, {subOrders, orders}) {
-      if (!subOrders) {
+      if (!subOrders || !orders) {
+        writeLog('State, setStatistics', 'empty suborders or orders', {subOrders, orders})
         return {}
       }
 
+
       const statistics = subOrders.reduce((acc, item) => {
-        if (!item.start_time) {
-          writeLog('State, setStatistics', 'unknown start_time', item.start_time)
+        const order = orders.find(i => i.order_id === item.order_id)
+
+        if (!order) {
+          writeLog('State, setStatistics', 'order not found', item.order_id)
+          return acc
+        }
+        if (!order.start_time) {
+          writeLog('State, setStatistics', 'unknown start_time', order.order_id)
           return acc
         }
 
-        const objectDate = new Date(item.start_time)
+        const objectDate = new Date(order.start_time)
         const year = objectDate.getFullYear()
         const month = objectDate.getMonth() + 1 <= 9 ? '0' + objectDate.getMonth() + 1 : objectDate.getMonth() + 1
         const date = objectDate.getDate()
@@ -60,18 +50,11 @@ export default {
 
       state.statistics = statistics
     }
-
   },
   getters: {
-    statistics: state => ({ cmd, from, to, id }) => {
-      switch (cmd) {
-        case 'cash' : return getCash(state.statistics, from, to, id)
-      }
+    statistics: state => ({from, to, id }) => {
+
     }
   }
   // this.$store.getters.statistics('cashTotal', '2018-09-01 00:00', '2018-09-30 23:59', 8800000001) // 15890 
-}
-
-const getCash = (statistics, from, to, id) => {
-  return 'statistics'
 }
