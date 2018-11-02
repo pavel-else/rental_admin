@@ -1,6 +1,7 @@
 import {writeLog} from '@/functions/logs'
 import makeShortDate from '@/functions/makeShortDate'
 import getNextDay from '@/functions/getNextDay'
+import fillPeriod from '@/functions/createPeriod'
 
 export default {
   state: {
@@ -52,15 +53,17 @@ export default {
   getters: {
     statistics: state => ({cmd, from, to, id }) => {
       const select = (from, to, id) => {
-
+        const period = fillPeriod(from, to)
+        console.log(period)
       }
       switch (cmd) {
-        case 'getCount' : getRentCount()
+        case 'getCount' : getRentCount(select(from, to, id))
+        break
       }
 
     }
   }
 }
 
-const getRentCount = () => {
+const getRentCount = (list) => {
 }
