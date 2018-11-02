@@ -1,5 +1,6 @@
 import {writeLog} from '@/functions/logs'
 import makeShortDate from '@/functions/makeShortDate'
+import getNextDay from '@/functions/getNextDay'
 
 export default {
   state: {
@@ -44,6 +45,7 @@ export default {
         return acc
       }, {})
 
+
       state.statistics = statistics
     }
   },
@@ -60,4 +62,5 @@ export default {
   }
 }
 
-const getRentCount = () => {}
+const getRentCount = () => {
+}

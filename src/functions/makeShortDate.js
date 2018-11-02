@@ -17,7 +17,7 @@ export default (fullDate /*str*/) => {
   }
 
   const year = objectDate.getFullYear()
-  const month = objectDate.getMonth() + 1 <= 9 ? '0' + objectDate.getMonth() + 1 : objectDate.getMonth() + 1
+  const month = +objectDate.getMonth() + 1 <= 9 ? `0${+objectDate.getMonth() + 1}` : `${+objectDate.getMonth() + 1}`
   const date = objectDate.getDate()
 
   return (year && month && date) ? `${year}-${month}-${date}` : undefined
