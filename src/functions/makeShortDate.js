@@ -5,14 +5,14 @@ import {writeLog} from './logs'
 */
 export default (fullDate /*str*/) => {
   if (!fullDate) {
-    writeLog('makeShortDate.js', 'empty date', fullDate)
+    writeLog('makeShortDate.js', 'empty date', {fullDate})
     return undefined
   }
 
   const objectDate = new Date(fullDate)
 
   if (isNaN(objectDate)) {
-    writeLog('makeShortDate.js', 'error to parse date', fullDate)
+    writeLog('makeShortDate.js', 'error to parse date', {fullDate})
     return undefined
   }
 
