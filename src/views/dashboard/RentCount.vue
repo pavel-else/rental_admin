@@ -3,14 +3,15 @@ import { Line } from 'vue-chartjs'
 import { Bar } from 'vue-chartjs'
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips'
-
-function random (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
+import createPeriod from '@/functions/createPeriod'
 
 export default {
   extends: Bar,
-  props: ['height'],
+
+  props: {
+    from: String,
+    to: String,
+  },
   data() {
     return {
       d1: []
@@ -28,11 +29,13 @@ export default {
       const brandDanger = getStyle('--danger') || '#f86c6b'   
 
       let elements = 29
-      const data1 = []
-
+      const statistics = this.$store.getters.statistics({cmd: 'getCount', from: this.from, to: this.to, id: '8800000001'})
+  
       this.renderChart(
       {
-        labels: [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
+        labels: this.period.map(i => {
+          return i.slice(8, 12)
+        }),
         datasets: [
           {
             label: 'Стартов проката в день:',
@@ -40,7 +43,7 @@ export default {
             borderColor: brandInfo,
             pointHoverBackgroundColor: '#fff',
             borderWidth: 2,
-            data: this.$store.getters.statistics({cmd: 'getCount', from: '2018-09-01', to: '2018-09-30', id: '8800000001'})
+            data: statistics 
           }
         ]
       }, 
@@ -72,7 +75,7 @@ export default {
               beginAtZero: true,
               maxTicksLimit: 5,
               stepSize: Math.ceil(250 / 15),
-              max: 50
+              // max: 50
             },
             gridLines: {
               display: true
@@ -92,16 +95,28 @@ export default {
   },
   
   computed: {
-      subOrders() {
-        return this.$store.getters.subOrders
+    subOrders() {
+      return this.$store.getters.subOrders
+    },
+    period() {
+      if (!this.from || !this.to) {
+        return []
       }
+      console.log(this.to)
+      return createPeriod(this.from, this.to)
+    }
   },
 
   watch: {
     subOrders() {
       this.render()
+    },
+    to() {
+      this.render()
+    },
+    from() {
+      this.render()
     }
-
   }
 }
 

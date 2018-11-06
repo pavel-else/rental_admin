@@ -79,18 +79,21 @@
     <b-card>
       <b-row>
         <b-col sm="5">
-          <h4 id="traffic" class="card-title mb-0">Статистика проката, сентябрь 2018</h4>
+          <h4 id="traffic" class="card-title mb-0">Статистика проката</h4>
           <!-- <div class="small text-muted">Стартов проката</div> -->
         </b-col>
         <b-col sm="7" class="d-none d-md-block">
           <!-- <b-button type="button" variant="primary" class="float-right"><i class="icon-cloud-download"></i></b-button> -->
-          <b-button-toolbar class="float-right" aria-label="Toolbar with buttons group">
+         <!--<b-button-toolbar class="float-right" aria-label="Toolbar with buttons group">
             <b-form-radio-group class="mr-3" id="radiosBtn" buttons button-variant="outline-secondary" v-model="selected" name="radiosBtn">
               <b-form-radio class="mx-0" value="Day">День</b-form-radio>
               <b-form-radio class="mx-0" value="Month">Месяц</b-form-radio>
               <b-form-radio class="mx-0" value="Year">Год</b-form-radio>
+              <input type="date" v-model="rentCountFrom">
+              <input type="date" v-model="rentCountTo">
             </b-form-radio-group>
-          </b-button-toolbar>
+          </b-button-toolbar> -->
+          <date-panel @setDate="rentCountSetDate($event)"></date-panel>
         </b-col>
       </b-row>
 
@@ -99,7 +102,8 @@
         chartId="main-chart-01"
         class="chart-wrapper" 
         style="height:150px;margin:10px 0 40px;" 
-        height="100" 
+        :from="rentCountFrom"
+        :to="rentCountTo"
       ></rent-count>
 
       <div>Часов проката в день</div>
@@ -509,6 +513,8 @@ import SocialBoxChartExample from './dashboard/SocialBoxChartExample'
 import CalloutChartExample from './dashboard/CalloutChartExample'
 import { Callout } from '@coreui/vue'
 
+import DatePanel from './DatePanel'
+
 export default {
   name: 'dashboard',
   components: {
@@ -522,11 +528,14 @@ export default {
     RentHoursChart,
     RentCashProceedChart,
     SocialBoxChartExample,
-    CalloutChartExample
+    CalloutChartExample,
+    DatePanel
   },
   data: function () {
     return {
       selected: 'Month',
+      rentCountFrom: '',
+      rentCountTo: '',
       tableItems: [
         {
           avatar: { url: 'img/avatars/1.jpg', status: 'success' },
@@ -603,6 +612,9 @@ export default {
     }
   },
   methods: {
+    rentCountSetDate (e) {
+      console.log(e)
+    },
     variant (value) {
       let $variant
       if (value <= 25) {

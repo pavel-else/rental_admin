@@ -25,7 +25,7 @@ export default (_from, _to) => {
 
   const period = []
   let today = from
-  let i = 0
+  let i = 1
   let lim = 1000 // day, looping protection
 
   for (; i < lim; i++) {

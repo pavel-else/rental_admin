@@ -105,6 +105,7 @@ const getRentCount = (list) => {
     writeLog('statistics.js, getRentCount', 'statistics list in not an array', {list})
     return []
   }
+  console.log(list)
 
   return list.map(i => {
     return (i && i.length) ? i.length : 0
