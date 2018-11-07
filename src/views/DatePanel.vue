@@ -24,6 +24,9 @@
 </template>
 <script>
   export default {
+    props: {
+      name: String
+    },
     data() {
       return {
         selected: 'Month',
@@ -33,7 +36,7 @@
     },
     methods: {
       setDate() {
-        this.$emit('setDate', {type: this.selected, from: this.from, to: this.to})
+        this.$emit('setDate', {name: this.name, type: this.selected, from: this.from, to: this.to})
       }
     },
     watch: {
