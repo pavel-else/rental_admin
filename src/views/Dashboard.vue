@@ -60,8 +60,8 @@ export default {
     RentCashProceedChart,
     DatePanel
   },
-  mounted() {
-    this.setDateOfMonth('count')
+  created() {
+    this.setDateForMonth('count')
   },
   data() {
     return {
@@ -84,49 +84,50 @@ export default {
   },
   methods: {
     setDate (e) {
-      console.log(e)
       if (!this.rent[e.name]) {
         writeLog('Dashboard.vue, setDate', 'undefined name', {name: e.name})
       }
+      //console.log('e', e)
 
       switch (e.type) {
-        case 'FromTo' :
-          if (e.from && e.to) {
-            this.rent[e.name].type = e.type
-            this.rent[e.name].from = e.from
-            this.rent[e.name].to = e.to
-          }
-        break
         case 'Day' :
-          console.log('day')
-          this.setDateOfDay(e.name)
-        break
+          this.setDateForDay(e.name, e.from, e.to);
+        break;
         case 'Month' :
-          this.setDateOfMonth(e.name)
-        break
+          this.setDateForMonth(e.name, e.from, e.to);
+        break;
         case 'Year' : 
-          console.log('year')
-        break
+        break;
+        case 'FromTo' :
+          this.setDateForFromTo(e.name, e.from, e.to);
+        break;
       }
     },
-    setDateOfMonth(name) {      
-      const to = shortDate.make(new Date().toString())
-      const from = shortDate.getNextDay(to, -31)
+    setDateForDay(name, from, to) {
+      //to = shortDate.makeDate()
+      if (to) {
+        this.rent[name].type = 'Day';
+        this.rent[name].from = '2018-11-08 00:00';
+        this.rent[name].to = '2018-11-09 00:00';
+      }
+    },
+    setDateForMonth(name) {
+      const to = shortDate.makeDate();
+      const from = shortDate.getNextDay(to, -31);
 
       if (from && to) {
-        this.rent[name].type = 'Month'
+        this.rent[name].type = 'Month';
+        this.rent[name].from = from;
+        this.rent[name].to = to;
+      }
+    },
+    setDateForFromTo(name, from, to) {
+      if (from && to) {
+        this.rent[name].type = 'FromTo'
         this.rent[name].from = from
         this.rent[name].to = to
       }
     },
-    setDateOfDay(name) {
-      const to = shortDate.make(new Date().toString())
-      if (to) {
-        this.rent[name].type = 'Day'
-        this.rent[name].from = to // all right, from === to
-        this.rent[name].to = to
-      }
-    }
   },
 }
 </script>

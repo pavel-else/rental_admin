@@ -1,27 +1,39 @@
 import {writeLog} from './logs'
 
 /**
-* make('2018-09-01 10:15:27') // '2018-09-01'
+* makeDate('2018-09-01 10:15:27') // '2018-09-01'
 */
-export const make = (fullDate /*str*/) => {
+export const makeDate = (fullDate /*str*/, mod) => {
+  // Если передан пустой параметр, генерируется дата от сегодняшнего дня
   if (!fullDate) {
-    writeLog('makeShortDate.js', 'empty date', {fullDate})
-    return undefined
+    fullDate = new Date().toString();
   }
 
   const objectDate = new Date(fullDate)
 
   if (isNaN(objectDate)) {
-    writeLog('makeShortDate.js', 'error to parse date', {fullDate})
+    writeLog('date.js, makeDate', 'error to parse date', {fullDate})
     return undefined
   }
 
-  const year = objectDate.getFullYear()
-  const month = +objectDate.getMonth() + 1 <= 9 ? `0${+objectDate.getMonth() + 1}` : `${+objectDate.getMonth() + 1}`
-  const date = +objectDate.getDate() <= 9 ? `0${+objectDate.getDate()}` : objectDate.getDate()
+  const year = objectDate.getFullYear();
+  const month = +objectDate.getMonth() + 1 <= 9 ? `0${+objectDate.getMonth() + 1}` : `${+objectDate.getMonth() + 1}`;
+  const day = +objectDate.getDate() <= 9 ? `0${+objectDate.getDate()}` : objectDate.getDate();
+  const hours = +objectDate.getHours() <= 9 ? `0${+objectDate.getHours()}` : objectDate.getHours();
+  const minutes = +objectDate.getMinutes() <= 9 ? `0${+objectDate.getMinutes()}` : objectDate.getMinutes();
 
-  return (year && month && date) ? `${year}-${month}-${date}` : undefined
-}
+  if (!year || !month || !day) {
+    writeLog('date.js, makeDate', 'error to parse date', { year, month, day });
+    return undefined;
+  }
+
+  if (mod && (!hours || !minutes)) {
+    writeLog('date.js, makeDate', 'error to parse hourse', { mod, hours });
+    return undefined;
+  }
+
+  return mod ? `${year}-${month}-${day} ${hours}:${minutes}` :`${year}-${month}-${day}`;
+};
 
 
 /**
@@ -51,5 +63,75 @@ export const getNextDay = (today /*str*/, mult = 1) => {
 
   const tomorrow = new Date(todayTimestamp + dayInMs)
 
-  return make(tomorrow)
-}
+  return makeDate(tomorrow)
+};
+
+
+/**
+* createPeriod('2018-09-01 00:00', '2018-09-30 00:00', 'Day') should return ['00:00', '01:00', ... , '23:00', '00:00']
+* createPeriod('2018-09-01', '2018-09-30', 'Month') should return ['2018-09-01', '2018-09-02', ... , '2018-09-30']
+*/
+export const createPeriod = (_from, _to, type = 'Month') => {
+  if (!_from || !_to) {
+    writeLog('date.js, createPeriod', 'empty parameters', {_from, _to});
+    return null;
+  }
+
+  const createMonth = (_from, _to) => {
+    const from = makeDate(_from);
+    const to = makeDate(_to);
+    
+    if (!from || !to) {
+      writeLog('date.js, createPeriod', 'error to parse date', {_from, from, _to, to});
+      return null;
+    }
+    if (firstOverSecond(from, to)) {
+      writeLog('date.js, createPeriod', 'logical error. From > To', {from, to});
+      return null;
+    }
+    const period = [];
+    let today = from;
+    let i = 1;
+    let lim = 1000; // day, looping protection
+
+    for (; i < lim; i++) {
+      period.push(today);
+      if (today === to) {
+        break;
+      }
+
+      today = getNextDay(today);
+    }
+
+    if (i === lim) {
+      writeLog('createPeriod.js', 'warning! Perion exceeds the limit', {from, to, lim});
+      writeLog('createPeriod.js', 'warning! Perion exceeds the limit', {from, to, lim});
+      return null;
+    }
+
+    console.log('period', period)
+    return period;
+  };
+
+  const createDay = (from, to) => {};
+  const createYear = (from, to) => {};
+
+
+  switch (type) {
+    case 'Day' : return createDay(_from, _to);
+    case 'Month' : return createMonth(_from, _to);
+    case 'Year' : return createYear(_from, _to);
+  }
+};
+
+/**
+* If today is '2018-11-09 11:30', getCurrentHour() should return '11'
+*/
+export const getCurrentHour = () => {
+  const objectDate = new Date();
+  return objectDate.getHours();
+};
+
+export const firstOverSecond = (firstDate, secondDate) => {
+  return Date.parse(new Date(firstDate)) > Date.parse(new Date(secondDate))
+};

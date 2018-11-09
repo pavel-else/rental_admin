@@ -58,7 +58,7 @@ export default {
     * Геттер реализует механизм выдачи статистики на основании общей функции выборки информации (select) и роутера (switch).
     * В зависимости от приходящей команды (cmd) роутер передает выборку данных определенной функции для посл. обработки
     */
-    statistics: state => ({ cmd, from, to, id }) => {
+    statistics: state => ({ cmd, type, from, to, id }) => {
       if (!cmd) {
         writeLog('statistics, getters', 'cmd is not defined', {cmd})        
         return false
@@ -88,7 +88,8 @@ export default {
       }
 
       switch (cmd) {
-        case 'getCount': return getRentCount(select(from, to, id))
+        case 'getStarts': return getRentStarts(select(from, to, id));
+        case 'getStartsPerDay': return getRentStartsPerDay(select(from, to, id), from, to);
         //case 'getCash'
         //case 'getHours'
       }
@@ -96,18 +97,21 @@ export default {
   }
 }
 
-const getRentCount = (list) => {
+const getRentStarts = (list) => {
   if (!list) {
-    writeLog('statistics.js, getRentCount', 'not statistics entered', {list})
+    writeLog('statistics.js, getRentStarts', 'not statistics entered', {list})
     return []
   }
   if (!list.map) {
-    writeLog('statistics.js, getRentCount', 'statistics list in not an array', {list})
+    writeLog('statistics.js, getRentStarts', 'statistics list in not an array', {list})
     return []
   }
-  console.log(list)
 
   return list.map(i => {
     return (i && i.length) ? i.length : 0
   })
-}
+};
+const getRentStartsPerDay = (list, from, to) => {
+  console.log('perday', list, from, to);
+
+};

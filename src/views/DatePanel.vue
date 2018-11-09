@@ -23,6 +23,7 @@
   </b-button-toolbar>  
 </template>
 <script>
+  import * as shortDate from '@/functions/date'
   export default {
     props: {
       name: String
@@ -31,7 +32,7 @@
       return {
         selected: 'Month',
         from: '',
-        to: ''
+        to: shortDate.makeDate(new Date().toString())
       }
     },
     methods: {
