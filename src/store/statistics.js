@@ -1,7 +1,7 @@
 import {writeLog} from '@/functions/logs'
 import makeShortDate from '@/functions/makeShortDate'
 import getNextDay from '@/functions/getNextDay'
-import createPeriod from '@/functions/createPeriod'
+import * as shortDate from '@/functions/date'
 import copy from '@/functions/copy'
 
 export default {
@@ -69,12 +69,12 @@ export default {
         return false
       }
 
+      /**
+      * Функция осуществляет выборку объектов из заданного отрезка времени из всей статистики.
+      * Возвращает массив типа: [0:[{s1}, {s2}], 1:[{s4}, {s5}], ...]
+      */
       const select = (from, to, id) => {
-        /**
-        * Функция осуществляет выборку объектов из заданного отрезка времени из всей статистики.
-        * Возвращает массив типа: [0:[{s1}, {s2}], 1:[{s4}, {s5}], ...]
-        */
-        const period = createPeriod(from, to)
+        const period = shortDate.createPeriod(from, to)
         if (!period) {
           writeLog('State, select', 'error creating period. period not defined', {period, from, to})
           return null
@@ -111,7 +111,35 @@ const getRentStarts = (list) => {
     return (i && i.length) ? i.length : 0
   })
 };
-const getRentStartsPerDay = (list, from, to) => {
-  console.log('perday', list, from, to);
 
+const getRentStartsPerDay = (selected, from, to) => {
+
+// Сливаем результаты с разными датами в единый массив данных
+// [{}, {}, {}]
+  const collapse = selected.reduce((acc, item) => {
+    if (item && item.length > 0) {
+      acc = [...acc, ...item];
+    }
+    return acc;
+  }, []);
+  
+  // Подсчитываем результаты для каждого часа
+  // {21: 2, 23: 1}
+  const result = collapse.reduce((acc, item) => {
+    const h = shortDate.getCurrentHours(item.start_time);
+
+    if (acc[h]) {
+      acc[h] += 1;
+    } else {
+      acc[h] = 1;
+    }
+    return acc;
+  }, {});
+
+  // Готовим статистику Для каждого часа в в виде
+  // [0, 0, 0, 2, 0]
+  const period = shortDate.createPeriod(from, to, 'Day');
+  return period.map(i => {
+    return result[i] ? result[i] : 0;
+  });
 };

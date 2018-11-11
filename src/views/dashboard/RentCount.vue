@@ -29,9 +29,11 @@ export default {
       console.log({type: this.type, from: this.from, to: this.to});
     
       const makeStatDay = () => {
-        const period = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]; // day in hours
+        this.labels = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]; // day in hours
 
-        const stat = this.$store.getters.statistics({ cmd: 'getStartsPerDay', from: this.from, to: this.to, id: '8800000001' });
+        this.stat = this.$store.getters.statistics({ cmd: 'getStartsPerDay', from: this.from, to: this.to, id: '8800000001' });
+
+        this.render();
       };
 
       const makeStatMonth = () => {

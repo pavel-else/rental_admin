@@ -107,8 +107,8 @@ export default {
       //to = shortDate.makeDate()
       if (to) {
         this.rent[name].type = 'Day';
-        this.rent[name].from = '2018-11-08 00:00';
-        this.rent[name].to = '2018-11-09 00:00';
+        this.rent[name].from = '2018-11-11 00:00';
+        this.rent[name].to = '2018-11-11 23:00';
       }
     },
     setDateForMonth(name) {

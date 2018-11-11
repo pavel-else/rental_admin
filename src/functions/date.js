@@ -43,27 +43,49 @@ export const makeDate = (fullDate /*str*/, mod) => {
 */
 export const getNextDay = (today /*str*/, mult = 1) => {
   if (!today) {
-    writeLog('date.js, getNextDay', 'empty today', {today})
-    return undefined
+    writeLog('date.js, getNextDay', 'empty today', {today});
+    return null;
   }
   if (isNaN(+mult)) {
-    writeLog('date.js, getNextDay', 'multiplier is not a number', {mult})
-    return undefined
+    writeLog('date.js, getNextDay', 'multiplier is not a number', {mult});
+    return null;
   }
 
-  const objectDate = new Date(today)
+  const objectDate = new Date(today);
 
   if (isNaN(objectDate)) {
-    writeLog('getNextDay.js', 'error to parse date', today)
-    return undefined
+    writeLog('date.js, getNextDay', 'error to parse date', today);
+    return null;
   }
 
-  const todayTimestamp = Date.parse(today)
-  const dayInMs = 24 * 60 * 60 * 1000 * mult
+  const todayTimestamp = Date.parse(today);
+  const dayInMs = 24 * 60 * 60 * 1000 * mult;
 
-  const tomorrow = new Date(todayTimestamp + dayInMs)
+  const tomorrow = new Date(todayTimestamp + dayInMs);
 
-  return makeDate(tomorrow)
+  return makeDate(tomorrow);
+};
+
+export const getNextHours = (date /*str*/, mult = 1) => {
+  if (!date) {
+    writeLog('date.js, getNextHours', 'empty date', {date});
+    return null;
+  }
+  if (isNaN(+mult)) {
+    writeLog('date.js, getNextHours', 'multiplier is not a number', {mult});
+    return null;
+  }
+
+  const objectDate = new Date(date);
+  if (isNaN(objectDate)) {
+    writeLog('date.js, getNextHours', 'error to parse date', {date});
+    return null;
+  }
+  const timestamp = Date.parse(date);
+  const hourInMs = 60 * 60 * 1000 * mult;
+  const nextDate = new Date(timestamp + hourInMs);
+
+  return makeDate(nextDate, 'h');
 };
 
 
@@ -77,16 +99,16 @@ export const createPeriod = (_from, _to, type = 'Month') => {
     return null;
   }
 
-  const createMonth = (_from, _to) => {
+  const createForMonth = (_from, _to) => {
     const from = makeDate(_from);
     const to = makeDate(_to);
     
     if (!from || !to) {
-      writeLog('date.js, createPeriod', 'error to parse date', {_from, from, _to, to});
+      writeLog('date.js, createPeriod, createForMonth', 'error to parse date', {_from, from, _to, to});
       return null;
     }
     if (firstOverSecond(from, to)) {
-      writeLog('date.js, createPeriod', 'logical error. From > To', {from, to});
+      writeLog('date.js, createPeriod, createForMonth', 'logical error. From > To', {from, to});
       return null;
     }
     const period = [];
@@ -109,26 +131,56 @@ export const createPeriod = (_from, _to, type = 'Month') => {
       return null;
     }
 
-    console.log('period', period)
     return period;
   };
 
-  const createDay = (from, to) => {};
-  const createYear = (from, to) => {};
+  const createForDay = (_from, _to) => {
+    let from = makeDate(_from, 'h');
+    const to = makeDate(_to, 'h');
+    
+    if (!from || !to) {
+      writeLog('date.js, createPeriod, createForDay', 'error to parse date', {_from, from, _to, to});
+      return null;
+    }
+    if (firstOverSecond(from, to)) {
+      writeLog('date.js, createPeriod, createForDay', 'logical error. From > To', {from, to});
+      return null;
+    }
+
+    const period = [];
+
+    let i = 1;
+    let lim = 1000; // hours, looping protection
+
+    for (; i < lim; i += 1) {
+      if (firstOverSecond(from, to)) {
+        break;
+      }
+      period.push(getCurrentHours(from));
+      from = getNextHours(from);
+    }
+    return period;
+  };
+  
+  const createForYear = (from, to) => {};
 
 
   switch (type) {
-    case 'Day' : return createDay(_from, _to);
-    case 'Month' : return createMonth(_from, _to);
-    case 'Year' : return createYear(_from, _to);
+    case 'Day' : return createForDay(_from, _to);
+    case 'Month' : return createForMonth(_from, _to);
+    case 'Year' : return createForYear(_from, _to);
   }
 };
 
 /**
-* If today is '2018-11-09 11:30', getCurrentHour() should return '11'
+* If today is '2018-11-09 11:30', getCurrentHours() should return '11'
 */
-export const getCurrentHour = () => {
-  const objectDate = new Date();
+export const getCurrentHours = (date) => {
+  const objectDate = date ? new Date(date) : new Date();
+  if (isNaN(objectDate)) {
+    writeLog('date.js, getCurrentHours', 'parse date error', {date});
+  }
+
   return objectDate.getHours();
 };
 
