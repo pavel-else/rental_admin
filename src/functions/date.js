@@ -66,19 +66,19 @@ export const getNextDay = (today /*str*/, mult = 1) => {
   return makeDate(tomorrow);
 };
 
-export const getNextHours = (date /*str*/, mult = 1) => {
+export const getNextDateAndHours = (date /*str*/, mult = 1) => {
   if (!date) {
-    writeLog('date.js, getNextHours', 'empty date', {date});
+    writeLog('date.js, getNextDateAndHours', 'empty date', {date});
     return null;
   }
   if (isNaN(+mult)) {
-    writeLog('date.js, getNextHours', 'multiplier is not a number', {mult});
+    writeLog('date.js, getNextDateAndHours', 'multiplier is not a number', {mult});
     return null;
   }
 
   const objectDate = new Date(date);
   if (isNaN(objectDate)) {
-    writeLog('date.js, getNextHours', 'error to parse date', {date});
+    writeLog('date.js, getNextDateAndHours', 'error to parse date', {date});
     return null;
   }
   const timestamp = Date.parse(date);
@@ -157,11 +157,11 @@ export const createPeriod = (_from, _to, type = 'Month') => {
         break;
       }
       period.push(getCurrentHours(from));
-      from = getNextHours(from);
+      from = getNextDateAndHours(from);
     }
     return period;
   };
-  
+
   const createForYear = (from, to) => {};
 
 

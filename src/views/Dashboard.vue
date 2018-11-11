@@ -91,7 +91,7 @@ export default {
 
       switch (e.type) {
         case 'Day' :
-          this.setDateForDay(e.name, e.from, e.to);
+          this.setDateForDay(e.name);
         break;
         case 'Month' :
           this.setDateForMonth(e.name, e.from, e.to);
@@ -103,13 +103,13 @@ export default {
         break;
       }
     },
-    setDateForDay(name, from, to) {
-      //to = shortDate.makeDate()
-      if (to) {
-        this.rent[name].type = 'Day';
-        this.rent[name].from = '2018-11-11 00:00';
-        this.rent[name].to = '2018-11-11 23:00';
-      }
+    setDateForDay(name) {
+      this.rent[name].type = 'Day';
+      const to = shortDate.makeDate(null, 'h');
+      const from = shortDate.getNextDateAndHours(to, -23);
+
+      this.rent[name].to = to;
+      this.rent[name].from = from;
     },
     setDateForMonth(name) {
       const to = shortDate.makeDate();
