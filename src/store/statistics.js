@@ -90,6 +90,7 @@ export default {
       switch (cmd) {
         case 'getStarts': return getRentStarts(select(from, to, id));
         case 'getStartsPerDay': return getRentStartsPerDay(select(from, to, id), from, to);
+        case 'getStartsPerYear': return getStartsPerYear(select(from, to, id), from, to);
         //case 'getCash'
         //case 'getHours'
       }
@@ -114,8 +115,8 @@ const getRentStarts = (list) => {
 
 const getRentStartsPerDay = (selected, from, to) => {
 
-// Сливаем результаты с разными датами в единый массив данных
-// [{}, {}, {}]
+  // Сливаем результаты с разными датами в единый массив данных
+  // [{}, {}, {}]
   const collapse = selected.reduce((acc, item) => {
     if (item && item.length > 0) {
       acc = [...acc, ...item];
@@ -139,6 +140,34 @@ const getRentStartsPerDay = (selected, from, to) => {
   // Готовим статистику Для каждого часа в в виде
   // [0, 0, 0, 2, 0]
   const period = shortDate.createPeriod(from, to, 'Day');
+  return period.map(i => {
+    return result[i] ? result[i] : 0;
+  });
+};
+
+const getStartsPerYear = (selected, from, to) => {
+
+  const result = selected.reduce((acc, item) => {
+    if (!item) {
+      return acc;
+    }
+    // Нужна проверка по годам
+    const objectDate = new Date(item[0].start_time);
+    const month = objectDate.getMonth() + 1;
+    const year = objectDate.getFullYear();
+    const key = `${year}-${month}`;
+
+    if (acc[key]) {
+      acc[key] += item.length;
+    } else {
+      acc[key] = item.length;
+    }
+    return acc;
+  }, {});
+
+  const period = shortDate.createPeriod(from, to, 'Year');
+  console.log(period)
+
   return period.map(i => {
     return result[i] ? result[i] : 0;
   });

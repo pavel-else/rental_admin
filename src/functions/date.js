@@ -162,7 +162,33 @@ export const createPeriod = (_from, _to, type = 'Month') => {
     return period;
   };
 
-  const createForYear = (from, to) => {};
+  const createForYear = (from, to) => {
+    const objectDateFrom = new Date(from);
+    const objectDateTo = new Date(to);
+
+    const timestampFrom = Date.parse(objectDateFrom);
+    const timestampTo = Date.parse(objectDateTo);
+
+    const diff = timestampTo - timestampFrom; // ms
+    const lim = Math.ceil(diff / 1000 / 60 / 60 / 24 / 30);
+
+    let currentMonth = objectDateFrom.getMonth() + 1;
+    let currentYear = objectDateFrom.getFullYear();
+    const period = [];
+
+    for (let i = 1; i <= lim; i += 1) {
+      period.push(`${currentYear}-${currentMonth}`);
+
+      if (currentMonth === 12) {
+        currentMonth = 0;
+        currentYear += 1;
+      }
+
+      currentMonth += 1;
+    }
+    
+    return period;
+  };
 
 
   switch (type) {

@@ -97,6 +97,7 @@ export default {
           this.setDateForMonth(e.name, e.from, e.to);
         break;
         case 'Year' : 
+          this.setDateForYear(e.name);
         break;
         case 'FromTo' :
           this.setDateForFromTo(e.name, e.from, e.to);
@@ -120,6 +121,14 @@ export default {
         this.rent[name].from = from;
         this.rent[name].to = to;
       }
+    },
+    setDateForYear(name) {
+      this.rent[name].type = 'Year';
+      const to = shortDate.makeDate();
+      const from = shortDate.getNextDay(to, -365);
+
+      this.rent[name].to = to;
+      this.rent[name].from = from;
     },
     setDateForFromTo(name, from, to) {
       if (from && to) {

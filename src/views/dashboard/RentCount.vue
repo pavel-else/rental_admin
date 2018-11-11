@@ -30,7 +30,6 @@ export default {
     
       const makeStatDay = () => {
         const period = shortDate.createPeriod(this.from, this.to, 'Day');
-        console.log(period)
         this.labels = period.map(i => `${ i }:00`); // day in hours
 
         this.stat = this.$store.getters.statistics({ cmd: 'getStartsPerDay', from: this.from, to: this.to, id: '8800000001' });
@@ -46,7 +45,16 @@ export default {
         this.render();
       };
 
-      const makeStatYear = () => {};
+      const makeStatYear = () => {
+        const stat = this.$store.getters.statistics({ cmd: 'getStartsPerYear', from: this.from, to: this.to, id: '8800000001' });
+        const period = shortDate.createPeriod(this.from, this.to, 'Year');
+        const monthList = ["Янв", "Фев", "Мар", "Апр", "Май", "Июнь", "Июль", "Авг", "Сен", "Окт", "Ноя", "Дек"];
+
+        this.labels = period.map(i => monthList[i.slice(5, 7) - 1]);
+        this.stat = stat;
+        
+        this.render();
+      };
 
       const makeStatFromTo = () => {
         const period = shortDate.createPeriod(this.from, this.to);
@@ -78,7 +86,7 @@ export default {
           labels: this.labels,
           datasets: [
             {
-              label: 'Стартов проката в день:',
+              label: 'Стартов проката:',
               backgroundColor: hexToRgba(brandInfo, 10),
               borderColor: brandInfo,
               pointHoverBackgroundColor: '#fff',
