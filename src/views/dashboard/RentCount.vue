@@ -7,7 +7,6 @@ import * as shortDate from '@/functions/date'
 
 export default {
   extends: Bar,
-
   props: {
     type: String,
     from: String,
@@ -26,7 +25,7 @@ export default {
 
   methods: {
     getStatAndRender() {
-      console.log({type: this.type, from: this.from, to: this.to});
+      //console.log({type: this.type, from: this.from, to: this.to});
     
       const makeStatDay = () => {
         const period = shortDate.createPeriod(this.from, this.to, 'Day');
@@ -122,7 +121,7 @@ export default {
               ticks: {
                 beginAtZero: true,
                 maxTicksLimit: 5,
-                stepSize: Math.ceil(250 / 15),
+                stepSize: this.stepSize,
                 // max: 50
               },
               gridLines: {
@@ -147,6 +146,10 @@ export default {
     // Связано с watch - subOrders
     subOrders() {
       return this.$store.getters.subOrders
+    },
+    stepSize() {
+      const size = Math.max(...this.stat);
+      return Math.ceil(size / 5);
     }
   },
   

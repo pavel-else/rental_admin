@@ -21,6 +21,18 @@
         :to="rent.count.to"
       ></rent-count>
 
+      <div>Выручка в день</div>
+      <date-panel name="cash" @setDate="setDate($event)"></date-panel>
+      <rent-cash-proceed-chart 
+        chartId="main-chart-03"
+        class="chart-wrapper" 
+        style="height:150px;margin:10px 0 40px;" 
+        :type="rent.cash.type"
+        :from="rent.cash.from"
+        :to="rent.cash.to"
+      ></rent-cash-proceed-chart>
+      <div>Всего</div>
+
       <date-panel name="hours" @setDate="setDate($event)"></date-panel>
       <div>Часов проката в день</div>
       <rent-hours-chart 
@@ -30,14 +42,6 @@
         height="100" 
       ></rent-hours-chart>
 
-      <div>Выручка в день</div>
-      <rent-cash-proceed-chart 
-        chartId="main-chart-03"
-        class="chart-wrapper" 
-        style="height:150px;margin:10px 0 40px;" 
-        height="100" 
-      ></rent-cash-proceed-chart>
-      <div>Всего</div>
     </b-card>
   </div>
 </template>
@@ -61,7 +65,9 @@ export default {
     DatePanel
   },
   created() {
-    this.setDateForMonth('count')
+    this.setDateForMonth('count');
+    this.setDateForMonth('cash');
+    //this.setDateForMonth('hours');
   },
   data() {
     return {
