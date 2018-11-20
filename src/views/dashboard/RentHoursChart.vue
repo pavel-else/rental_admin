@@ -25,7 +25,13 @@ export default {
 
   methods: {
     getStatAndRender() {
-      //console.log({type: this.type, from: this.from, to: this.to});
+      // Не рендерить график, если данных в хранилище нет
+      if (!this.subOrders) {
+        console.log('RentCount.vue, empty subOrders');
+        return false;
+      }
+
+      console.log({ type: this.type, from: this.from, to: this.to });
     
       const makeStatDay = () => {
         const period = shortDate.createPeriod(this.from, this.to, 'Day');
@@ -39,7 +45,7 @@ export default {
       const makeStatMonth = () => {
         const period = shortDate.createPeriod(this.from, this.to);
         this.labels = period.map(i => i.slice(8, 12));
-        this.stat = this.$store.getters.statistics({ cmd: 'getStarts', from: this.from, to: this.to, id: '8800000001' });
+        this.stat = this.$store.getters.statistics({ cmd: 'getHours', from: this.from, to: this.to, id: '8800000001' });
 
         this.render();
       };
@@ -58,7 +64,7 @@ export default {
       const makeStatFromTo = () => {
         const period = shortDate.createPeriod(this.from, this.to);
         this.labels = period.map(i => i.slice(8, 12));
-        this.stat = this.$store.getters.statistics({ cmd: 'getStarts', from: this.from, to: this.to, id: '8800000001' });
+        this.stat = this.$store.getters.statistics({ cmd: 'getHours', from: this.from, to: this.to, id: '8800000001' });
 
         this.render();      
       };
@@ -85,7 +91,7 @@ export default {
           labels: this.labels,
           datasets: [
             {
-              label: 'Стартов проката:',
+              label: 'Часов апроката:',
               backgroundColor: hexToRgba(brandInfo, 10),
               borderColor: brandInfo,
               pointHoverBackgroundColor: '#fff',
@@ -151,21 +157,18 @@ export default {
       const size = Math.max(...this.stat);
       return Math.ceil(size / 5);
     }
-  },
-  
+  },  
 
   watch: {
     to() {
-      this.getStatAndRender()
+      this.getStatAndRender();
     },
     from() {
-      this.getStatAndRender()
+      this.getStatAndRender();
     },
     subOrders() {
-      this.getStatAndRender()
+      this.getStatAndRender();
     }
   }
 }
-
-
 </script>

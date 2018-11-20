@@ -26,6 +26,11 @@ export default {
 
   methods: {
     getStatAndRender() {
+      // Не рендерить график, если данных в хранилище нет
+      if (!this.subOrders) {
+        console.log('RentCount.vue, empty subOrders');
+        return false;
+      }
       //console.log({type: this.type, from: this.from, to: this.to});
     
       const makeStatDay = () => {

@@ -6,11 +6,11 @@
           <h4 id="traffic" class="card-title mb-0">Статистика проката</h4>
         </b-col>
         <b-col sm="7" class="d-none d-md-block">
-          <date-panel name="count" @setDate="setDate($event)"></date-panel>
+          <!-- <date-panel name="count" @setDate="setDate($event)"></date-panel> -->
         </b-col>
       </b-row>
 
-      <div>Стартов проката</div>
+<!--       <div>Стартов проката</div>
       <div class="from-to-line"><small>{{rent.count.from}}</small><small>{{rent.count.to}}</small></div>
       <rent-count 
         chartId="main-chart-01"
@@ -21,7 +21,7 @@
         :to="rent.count.to"
       ></rent-count>
 
-<!--       <div>Выручка в день</div>
+      <div>Выручка в день</div>
       <date-panel name="cash" @setDate="setDate($event)"></date-panel>
       <rent-cash-proceed-chart 
         chartId="main-chart-03"
@@ -31,7 +31,7 @@
         :from="rent.cash.from"
         :to="rent.cash.to"
       ></rent-cash-proceed-chart>
-      <div>Всего</div>
+      <div>Всего</div> -->
 
       <date-panel name="hours" @setDate="setDate($event)"></date-panel>
       <div>Часов проката в день</div>
@@ -39,10 +39,10 @@
         chartId="main-chart-02"
         class="chart-wrapper" 
         style="height:150px;margin:10px 0 40px;" 
-        :type="rent.cash.type"
-        :from="rent.cash.from"
-        :to="rent.cash.to"
-      ></rent-hours-chart> -->
+        :type="rent.hours.type"
+        :from="rent.hours.from"
+        :to="rent.hours.to"
+      ></rent-hours-chart>
 
     </b-card>
   </div>
@@ -69,7 +69,7 @@ export default {
   created() {
     this.setDateForMonth('count');
     this.setDateForMonth('cash');
-    //this.setDateForMonth('hours');
+    this.setDateForMonth('hours');
   },
   data() {
     return {
@@ -80,10 +80,12 @@ export default {
           to: ''
         },
         hours: {
+          type: 'Month',
           from: '',
           to: ''
         },
         cash: {
+          type: 'Month',
           from: '',
           to: ''
         }

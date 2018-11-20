@@ -128,7 +128,6 @@ export const getRentStartsPerYear = (statistics, from, to, id) => {
   }, {});
 
   const period = shortDate.createPeriod(from, to, 'Year');
-  console.log(period)
 
   return period.map(i => {
     return result[i] ? result[i] : 0;
@@ -191,4 +190,42 @@ export const getRentCashPerDay = (statistics, from, to, id) => {
   return period.map(i => {
     return result[i] ? result[i] : 0;
   });
+};
+
+export const getRentHours = (statistics, from, to, id) => {
+  const list = select(statistics, from, to, id);
+
+  console.log(list)
+  if (!list) {
+    writeLog('statistics.js, getRentHours', 'not statistics entered', { list });
+    return [];
+  }
+  if (!list.map) {
+    writeLog('statistics.js, getRentHours', 'statistics list in not an array', { list });
+    return [];
+  }
+
+  const result = list.reduce((acc, item) => {
+    if (item && item.reduce) {
+      const sumTime = item.reduce((sum, subOrder) => {
+        const time = getRentTime(subOrder);
+        sum += time;
+        return sum;
+      }, 0);
+      acc.push(+sumTime.toFixed(2));
+    } else {
+      acc.push(0);
+    }
+    return acc;
+  }, []);
+
+  console.log('result', result);
+  return result;
+};
+
+const getRentTime = (subOrder) => {
+  const start = Date.parse(subOrder.start_time);
+  const end = Date.parse(subOrder.end_time);
+  const diff = end - start;
+  return diff / 60 / 60 / 1000;
 };

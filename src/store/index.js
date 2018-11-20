@@ -69,7 +69,7 @@ export default new Vuex.Store({
         for (let i in stack) {
           if (isNaN(stack[i])) {
             // Если привести к числу не получается, выбрасываем предупреждение, оставляем свойство в исходном значении
-            writeLog('index.js, setOrders', 'parse error', {order_id, key: i, value: item[i] });
+            writeLog('Store, setOrders', 'parse error', {order_id, key: i, value: item[i] });
             stack[i] = item[i];
           }
         }
@@ -83,7 +83,7 @@ export default new Vuex.Store({
       //
       // SET SUBORDERS
       if (!_subOrders) {
-        writeLog('index.js, setSubOrders', 'empty subOrders', { _subOrders });
+        writeLog('Store, setSubOrders', 'empty subOrders', { _subOrders });
         return [];
       }
 
@@ -92,14 +92,14 @@ export default new Vuex.Store({
         const order = orders.find(i => i.order_id == item.order_id);
         // Сабордер не может существовать без ордера
         if (!order) {
-          writeLog('index.js, setSubOrders', 'order not found', { order_id: item.order_id });
+          writeLog('Store, setSubOrders', 'order not found', { order_id: item.order_id });
           return acc;
         }
 
         // Сабордер не имеющий начала не должен включаться в статистику
         if (isNaN(new Date(order.start_time))) {
           writeLog(
-            'index.js, setSubOrders',
+            'Store, setSubOrders',
             'date parse error to start_time. This suborder is excluded from the statistics.',
             { start_time: order.start_time }
           );
@@ -110,7 +110,7 @@ export default new Vuex.Store({
         // Сабордер не имеющий конца не должен включаться в статистику
         if (isNaN(end_time)) {
           writeLog(
-            'index.js, setSubOrders', 
+            'Store, setSubOrders', 
             'date parse error to end_time. This suborder is excluded from the statistics.', 
             { order_id: item.order_id, end_time: item.end_time }
           );
@@ -132,7 +132,7 @@ export default new Vuex.Store({
         for (let i in stack) {
           if (isNaN(stack[i])) {
             // Если привести к числу не получается, выбрасываем предупреждение, оставляем свойство в исходном значении
-            writeLog('index.js, setSubOrders', 'parse error', { order_id: item.order_id, key: i, value: item[i] });
+            writeLog('Store, setSubOrders', 'parse error', { order_id: item.order_id, key: i, value: item[i] });
             stack[i] = item[i];
           }
         }
@@ -176,21 +176,35 @@ export default new Vuex.Store({
       }
 
       if (!state.statistics) {
-        writeLog('index.js, statistics (getters)', 'empty statistics', { statistics: state.statistics });
+        writeLog('Store, statistics (getters)', 'empty statistics', { statistics: state.statistics });
         return [];
       }
 
+      let result;
+
       switch (cmd) {
-        case 'getStarts': return Stat.getRentStarts(state.statistics, from, to, id); // month & to-from
-        case 'getStartsPerDay': return Stat.getRentStartsPerDay(state.statistics, from, to);
-        case 'getStartsPerYear': return Stat.getRentStartsPerYear(state.statistics, from, to, id);
+        case 'getStarts': result = Stat.getRentStarts(state.statistics, from, to, id); // month & to-from
+        break;
+        case 'getStartsPerDay': result = Stat.getRentStartsPerDay(state.statistics, from, to);
+        break;
+        case 'getStartsPerYear': result = Stat.getRentStartsPerYear(state.statistics, from, to, id);
+        break;
         
-        case 'getCashPerMonth' : return Stat.getRentCash(state.statistics, from, to, id);
-        case 'getCashPerFromTo' : return Stat.getRentCash(state.statistics, from, to, id);
-        case 'getCashPerDay' : return Stat.getRentCashPerDay(state.statistics, from, to, id);
-        //case 'getHours'
-        default : writeLog('statistics.js, select', 'unknown cmd', { cmd });
+        case 'getCashPerMonth': result = Stat.getRentCash(state.statistics, from, to, id);
+        break;
+        case 'getCashPerFromTo': result = Stat.getRentCash(state.statistics, from, to, id);
+        break;
+        case 'getCashPerDay': result = Stat.getRentCashPerDay(state.statistics, from, to, id);
+        break;
+        //add case 'getCashPerYear'
+
+        case 'getHours': result = Stat.getRentHours(state.statistics, from, to, id);
+        break;
+
+        default : writeLog('Store, statistics', 'unknown cmd', { cmd });
       }
+
+      return result ? result : [];
     }
   }
 });
