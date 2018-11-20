@@ -13,7 +13,11 @@ export default {
      * Метод приводит статисику к виду:
      * statistics: {'2018-09-01': [{subOrder1}, subOrder2, ...], '2018-09-02': [{subOrder3}, subOrder4, ...], ...}
      */
-    setStatistics(state, {subOrders, orders}) {
+    setStatistics(state) {
+      const subOrders = this.getters.subOrders;
+      const orders = this.getters.history;
+      console.log('THIS', this)
+
       if (!subOrders || !orders) {
         writeLog('State, setStatistics', 'empty suborders or orders', {subOrders, orders})
         return {}
@@ -102,132 +106,3 @@ export default {
   }
 }
 
-const getRentStarts = (list) => {
-  if (!list) {
-    writeLog('statistics.js, getRentStarts', 'not statistics entered', {list});
-    return [];
-  }
-  if (!list.map) {
-    writeLog('statistics.js, getRentStarts', 'statistics list in not an array', {list});
-    return [];
-  }
-
-  return list.map(i => {
-    return (i && i.length) ? i.length : 0;
-  })
-};
-
-const getRentStartsPerDay = (selected, from, to) => {
-
-  // Сливаем результаты с разными датами в единый массив данных
-  // [{}, {}, {}]
-  const collapse = selected.reduce((acc, item) => {
-    if (item && item.length > 0) {
-      acc = [...acc, ...item];
-    }
-    return acc;
-  }, []);
-  
-  // Подсчитываем результаты для каждого часа
-  // {21: 2, 23: 1}
-  const result = collapse.reduce((acc, item) => {
-    const h = shortDate.getCurrentHours(item.start_time);
-
-    if (acc[h]) {
-      acc[h] += 1;
-    } else {
-      acc[h] = 1;
-    }
-    return acc;
-  }, {});
-
-  // Готовим статистику Для каждого часа в в виде
-  // [0, 0, 0, 2, 0]
-  const period = shortDate.createPeriod(from, to, 'Day');
-  return period.map(i => {
-    return result[i] ? result[i] : 0;
-  });
-};
-
-const getRentStartsPerYear = (selected, from, to) => {
-
-  const result = selected.reduce((acc, item) => {
-    if (!item) {
-      return acc;
-    }
-    // Нужна проверка по годам
-    const objectDate = new Date(item[0].start_time);
-    const month = objectDate.getMonth() + 1;
-    const year = objectDate.getFullYear();
-    const key = `${year}-${month}`;
-
-    if (acc[key]) {
-      acc[key] += item.length;
-    } else {
-      acc[key] = item.length;
-    }
-    return acc;
-  }, {});
-
-  const period = shortDate.createPeriod(from, to, 'Year');
-  console.log(period)
-
-  return period.map(i => {
-    return result[i] ? result[i] : 0;
-  });
-};
-
-const getRentCash = (list) => {
-  return list.map(i => {
-    if (i === undefined) {
-      return 0;
-    }
-
-    return i.reduce((acc, item) => {
-      // Эти проверки нужно проводить на стадии прихода и записи данных в хранилище
-      const billRent = Number(item.bill_rent);
-      const billAccess = Number(item.bill_access);
-      const sale = Number(item.sale);
-
-      if (isNaN(billRent) || isNaN(billAccess) || isNaN(sale)) {
-        writeLog('statistics.js, getRentCash', 'parse error, data is not a number', 
-          {rent: item.bill_rent, access: item.bill_access, sale: item.sale}
-        );
-      }
-
-      acc += billRent + billAccess - sale;
-      return acc;
-    }, 0);
-  });
-};
-
-const getRentCashPerDay = (selected, from, to) => {
-  // Сливаем результаты с разными датами в единый массив данных
-  // [{}, {}, {}]
-  const collapse = selected.reduce((acc, item) => {
-    if (item && item.length > 0) {
-      acc = [...acc, ...item];
-    }
-    return acc;
-  }, []);
-  
-  // Подсчитываем результаты для каждого часа
-  // {21: 2, 23: 1}
-  const result = collapse.reduce((acc, item) => {
-    const h = shortDate.getCurrentHours(item.start_time);
-
-    if (acc[h]) {
-      acc[h] += item.bill_total;
-    } else {
-      acc[h] = item.bill_total;
-    }
-    return acc;
-  }, {});
-  console.log(collapse)
-  // Готовим статистику Для каждого часа в в виде
-  // [0, 0, 0, 2, 0]
-  const period = shortDate.createPeriod(from, to, 'Day');
-  return period.map(i => {
-    return result[i] ? result[i] : 0;
-  });
-};

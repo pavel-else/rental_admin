@@ -20,12 +20,18 @@ export default {
   },
 
   mounted() {
-    this.getStatAndRender()
+    this.getStatAndRender();
   },
 
   methods: {
     getStatAndRender() {
-      //console.log({type: this.type, from: this.from, to: this.to});
+      // Не рендерить график, если данных в хранилище нет
+      if (!this.subOrders) {
+        console.log('RentCount.vue, empty subOrders');
+        return false;
+      }
+
+      console.log({ type: this.type, from: this.from, to: this.to });
     
       const makeStatDay = () => {
         const period = shortDate.createPeriod(this.from, this.to, 'Day');
@@ -145,7 +151,7 @@ export default {
     // Свойство необходимо для ререндеринга графика после прихода с сервера данных
     // Связано с watch - subOrders
     subOrders() {
-      return this.$store.getters.subOrders
+      return this.$store.getters.subOrders;
     },
     stepSize() {
       const size = Math.max(...this.stat);
@@ -156,13 +162,13 @@ export default {
 
   watch: {
     to() {
-      this.getStatAndRender()
+      this.getStatAndRender();
     },
     from() {
-      this.getStatAndRender()
+      this.getStatAndRender();
     },
     subOrders() {
-      this.getStatAndRender()
+      this.getStatAndRender();
     }
   }
 }

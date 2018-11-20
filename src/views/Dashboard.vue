@@ -21,7 +21,7 @@
         :to="rent.count.to"
       ></rent-count>
 
-      <div>Выручка в день</div>
+<!--       <div>Выручка в день</div>
       <date-panel name="cash" @setDate="setDate($event)"></date-panel>
       <rent-cash-proceed-chart 
         chartId="main-chart-03"
@@ -38,9 +38,11 @@
       <rent-hours-chart 
         chartId="main-chart-02"
         class="chart-wrapper" 
-        style="height:150px;margin:10px 0 40px;"  
-        height="100" 
-      ></rent-hours-chart>
+        style="height:150px;margin:10px 0 40px;" 
+        :type="rent.cash.type"
+        :from="rent.cash.from"
+        :to="rent.cash.to"
+      ></rent-hours-chart> -->
 
     </b-card>
   </div>

@@ -40,7 +40,6 @@ export default {
         // PART 2
         stack.bill_total = bill_access + bill_rent - sale;
 
-
         acc.push(stack);
         return acc;
       }, []);

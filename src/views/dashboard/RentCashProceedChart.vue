@@ -26,13 +26,14 @@ export default {
 
   methods: {
     getStatAndRender() {
-      console.log({type: this.type, from: this.from, to: this.to});
+      //console.log({type: this.type, from: this.from, to: this.to});
     
       const makeStatDay = () => {
         const period = shortDate.createPeriod(this.from, this.to, 'Day');
         this.labels = period.map(i => `${ i }:00`); // day in hours
 
         this.stat = this.$store.getters.statistics({ cmd: 'getCashPerDay', from: this.from, to: this.to, id: '8800000001' });
+        console.log(this.stat, 'stat')
       };
 
       const makeStatMonth = () => {
