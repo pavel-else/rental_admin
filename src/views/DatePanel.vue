@@ -1,5 +1,5 @@
 <template>
-  <b-button-toolbar class="float-right date-panel" aria-label="Toolbar with buttons group" >
+  <b-button-toolbar class="date-panel" aria-label="Toolbar with buttons group" >
     <b-form-radio-group class="mr-3" v-model="selected" buttons button-variant="outline-secondary" name="radiosBtn">
       <b-form-radio class="mx-0" value="Day">День</b-form-radio>
       <b-form-radio class="mx-0" value="Month">Месяц</b-form-radio>
@@ -55,7 +55,9 @@
 </script>
 <style scoped>
   .date-panel {
-    display: inline-flex;
+    display: flex;
+    flex-basis: 100%;
+    justify-content: flex-end;
     flex-wrap: nowrap;
   }
   .from-to {

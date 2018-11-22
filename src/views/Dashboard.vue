@@ -1,52 +1,61 @@
  <template>
   <div class="stat animated fadeIn">
-    <StatNav @select="selectNavItem($event)"></StatNav>  
-    <b-card class="stat__card">
-      <h4>Статистика проката</h4>
-      <div class="stat__charts">        
-        <div v-show="selected === 'rentals'">
-          <date-panel name="count" @setDate="setDate($event)"></date-panel>
-          <div>Стартов проката</div>
-          <div class="from-to-line"><small>{{rent.count.from}}</small><small>{{rent.count.to}}</small></div>
-          <rent-count 
-            chartId="main-chart-01"
-            class="chart-wrapper" 
-            style="height:150px;margin:10px 0 40px;"
-            :type="rent.count.type"
-            :from="rent.count.from"
-            :to="rent.count.to"
-          ></rent-count>
+    <h3 class="stat__caption">Статистика проката</h3>
+    <div class="stat__wrap row">
+      <stat-nav class="stat__nav col-sm-2" @select="selectNavItem($event)"></stat-nav>
 
-          <div>Выручка в день</div>
-          <date-panel name="cash" @setDate="setDate($event)"></date-panel>
-          <rent-cash-proceed-chart 
-            chartId="main-chart-03"
-            class="chart-wrapper" 
-            style="height:150px;margin:10px 0 40px;" 
-            :type="rent.cash.type"
-            :from="rent.cash.from"
-            :to="rent.cash.to"
-          ></rent-cash-proceed-chart>
-          <div>Всего</div>
+      <b-card class="stat__card col-sm-10">
+        <div class="stat__charts">
 
-          <date-panel name="hours" @setDate="setDate($event)"></date-panel>
-          <div>Часов проката в день</div>
-          <rent-hours-chart 
-            chartId="main-chart-02"
-            class="chart-wrapper" 
-            style="height:150px;margin:10px 0 40px;" 
-            :type="rent.hours.type"
-            :from="rent.hours.from"
-            :to="rent.hours.to"
-          ></rent-hours-chart>        
-        </div> 
-      </div>
-    </b-card>
+          <div v-show="selected === 'rentals'">
+            <h4>Стартов проката</h4>
+            <date-panel name="count" @setDate="setDate($event)"></date-panel>
+            <div class="from-to-line"><small>{{ rent.count.from }}</small><small>{{ rent.count.to }}</small></div>
+            <rent-count 
+              chartId="main-chart-01"
+              class="chart-wrapper" 
+              style="height:150px;margin:10px 0 40px;"
+              :type="rent.count.type"
+              :from="rent.count.from"
+              :to="rent.count.to"
+            ></rent-count>
+
+            <h4>Выручка в день</h4>
+            <date-panel name="cash" @setDate="setDate($event)"></date-panel>
+            <div class="from-to-line"><small>{{ rent.cash.from }}</small><small>{{ rent.cash.to }}</small></div>
+            <rent-cash-proceed-chart 
+              chartId="main-chart-03"
+              class="chart-wrapper" 
+              style="height:150px;margin:10px 0 40px;" 
+              :type="rent.cash.type"
+              :from="rent.cash.from"
+              :to="rent.cash.to"
+            ></rent-cash-proceed-chart>
+            <div>Всего</div>
+
+            <h4>Часов проката в день</h4>
+            <date-panel name="hours" @setDate="setDate($event)"></date-panel>
+            <div class="from-to-line"><small>{{ rent.hours.from }}</small><small>{{ rent.hours.to }}</small></div>
+            <rent-hours-chart 
+              chartId="main-chart-02"
+              class="chart-wrapper" 
+              style="height:150px;margin:10px 0 40px;" 
+              :type="rent.hours.type"
+              :from="rent.hours.from"
+              :to="rent.hours.to"
+            ></rent-hours-chart>        
+          </div>
+
+          <div v-show="selected === 'products'">
+            asdfasdfa
+          </div>
+        </div>
+      </b-card>    
+    </div>
   </div>
 </template>
 
 <script>
-// import { Callout } from '@coreui/vue'
 import RentCount from './dashboard/RentCount'
 import RentHoursChart from './dashboard/RentHoursChart'
 import RentCashProceedChart from './dashboard/RentCashProceedChart'
@@ -58,7 +67,6 @@ import * as shortDate from '@/functions/date'
 export default {
   name: 'dashboard',
   components: {
-    // Callout,
     RentCount,
     RentHoursChart,
     RentCashProceedChart,
@@ -94,7 +102,6 @@ export default {
   },
   methods: {
     selectNavItem(e) {
-      console.log(e);
       this.selected = e;
     },
     setDate (e) {
@@ -160,11 +167,20 @@ export default {
     justify-content: space-between;
   }
 
-  .stat {
+  .stat__wrap {
     display: flex;
     justify-content: space-between;
   }
+  .stat__nav {
+
+  }
   .stat__card {
     flex-grow: 1;
+  }
+  .stat__caption {
+    flex-basis: 100%;
+  }
+  .no-gutters {
+    
   }
 </style>

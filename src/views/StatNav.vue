@@ -1,48 +1,71 @@
 <template>
-  <nav class="stat__nav">
-    <ul class="ul">
-      <li class="li" @click="select('rentals')">Пункты проката</li>
-      <li class="li" @click="select('employers')">Сотрудники</li>
-      <li class="li" @click="select('products')">Товары</li>
+  <nav class="stat-nav">
+    <ul class="stat-nav__list">
+      <li class="stat-nav__item" @click="select('rentals')">
+        <h5 class="nav-stat__capt" :class="{ active: selected == 'rentals' }">Пункты проката</h5>
+        <div class="btn-show">show</div>
+
+        <ul class="stat-nav--sub__list sub-nav">
+          <li class="sub-nav__item">Луначарского, 222</li>
+          <li class="sub-nav__item">Неизвестная, 57</li>
+        </ul>
+      </li>
+      <li class="stat-nav__item" :class="{ active: selected == 'employers' }"  @click="select('employers')">
+        <h5 class="nav-stat__capt">Сотрудники</h5>
+      </li>
+      <li class="stat-nav__item" :class="{ active: selected == 'products' }"  @click="select('products')">
+        <h5 class="nav-stat__capt">Товары</h5>
+      </li>
     </ul>
   </nav>  
 </template>
 
 <script>
+  export default {
+    name: 'StatNav',
 
-export default {
-  name: 'StatNav',
-
-  data() {
-    return {
-      selected: 'rentals',
-    }
-  },
-  methods: {
-    select(msg) {
-      this.selected = msg;
-      this.$emit('select', msg);
+    data() {
+      return {
+        selected: 'rentals',
+      }
+    },
+    methods: {
+      select(msg) {
+        this.selected = msg;
+        this.$emit('select', msg);
+      }
     }
   }
-
-}
 </script>
 <style scoped>
-  .stat__nav {
-    outline: 1px solid lightgray;
-  }
-  .stat__nav .ul {
-    margin: 0 30px 0 0;
+  .stat-nav {}
+
+  .stat-nav__list {
+    margin: 0;
     padding: 0;
     list-style: none;
   }
-  .stat__nav .li {
-    margin: 5px 0;
+  .stat-nav__item {
+    margin: 0;
+    padding: 0;
+    position: relative;
   }
-  .stat__nav .li:hover {
+  .stat-nav__item:hover {
     cursor: pointer;
+    /*background-color: #20a8d8;*/
+    /*color: #fff;*/
   }
-  .stat__card {
-    flex-grow: 1;
+  .active {
+    outline: 1px solid gray;
+  }
+  .btn-show {
+    position: absolute;
+    display: none;
+  }
+  .li__capt {
+
+  }
+  .sub-nav__item {
+    padding-left: 5px;
   }
 </style>

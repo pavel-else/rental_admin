@@ -18,11 +18,9 @@ export default {
       labels: []
     }
   },
-
   mounted() {
     this.getStatAndRender();
   },
-
   methods: {
     getStatAndRender() {
       // Не рендерить график, если данных в хранилище нет
@@ -158,8 +156,6 @@ export default {
       return Math.ceil(size / 5);
     }
   },
-  
-
   watch: {
     to() {
       this.getStatAndRender();
@@ -172,6 +168,4 @@ export default {
     }
   }
 }
-
-
 </script>
