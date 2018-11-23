@@ -62,9 +62,6 @@
     position: absolute;
     display: none;
   }
-  .li__capt {
-
-  }
   .sub-nav__item {
     padding-left: 5px;
   }

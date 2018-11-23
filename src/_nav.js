@@ -30,7 +30,7 @@ export default {
     // },
     {
       name: 'Пункты проката',
-      url: '/theme/colors',
+      url: '/rental_locations',
       icon: 'icon-location-pin'
     },
     {

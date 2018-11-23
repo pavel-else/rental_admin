@@ -11,11 +11,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    rentalLocations: [],
     orders: [],
     subOrders: [],
     statistics: {}
   },
   mutations: {
+    setRentalLocations(state, renalLocations) {
+      state.rentalLocations = renalLocations;
+    },
     setOrders(state, orders) {
       state.orders = orders;
     },
@@ -34,8 +38,9 @@ export default new Vuex.Store({
       const url = 'http://overhost.net/rental2/api_v1/ajax/App/request.php';
       const config = {};
       const cmds = [
-        'getHistory',
-        'getSubOrders' 
+        // 'getHistory',
+        // 'getSubOrders',
+        'getRentalLocations' 
       ];
       const queue = cmds.map(i => {
         return {cmd: i}
@@ -47,11 +52,27 @@ export default new Vuex.Store({
       })
       .then(r => {
         console.log('front <-- back', r);
-        dispatch('setData', { _orders: r.data.history, _subOrders: r.data.sub_orders });
-      })
+        dispatch('setData', { 
+          _orders: r.data.history, 
+          _subOrders: r.data.sub_orders,
+          _rental_locations: r.data.rental_locations
+        });
+      });
     },
 
-    setData({ commit }, { _subOrders, _orders }) {
+    setData({ commit }, { _subOrders, _orders, _rental_locations }) {
+      //
+      // SET RENTAL LOCATIONS
+      if (!_rental_locations) {
+        writeLog('State, setData, rental locations', 'empty data', { _rental_locations });
+        return false;
+      }
+      const renalLocations = _rental_locations.reduce((acc, item) => {
+        acc.push(item);
+        return acc;
+      }, []);
+      commit('setRentalLocations', renalLocations);
+
       //
       // SET ORDERS
       if (!_orders) {
@@ -157,6 +178,7 @@ export default new Vuex.Store({
   },
 
   getters: {
+    getRentalLocations: state => state.rentalLocations,
     orders: state => state.orders,
     subOrders: state => state.subOrders,
 
