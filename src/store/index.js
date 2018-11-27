@@ -38,8 +38,8 @@ export default new Vuex.Store({
       const url = 'http://overhost.net/rental2/api_v1/ajax/App/request.php';
       const config = {};
       const cmds = [
-        // 'getHistory',
-        // 'getSubOrders',
+        'getHistory',
+        'getSubOrders',
         'getRentalLocations' 
       ];
       const queue = cmds.map(i => {

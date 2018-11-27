@@ -2,9 +2,9 @@
   <div class="stat animated fadeIn">
     <h3 class="stat__caption">Статистика проката</h3>
     <div class="stat__wrap row">
-      <stat-nav class="stat__nav col-sm-2" @select="selectNavItem($event)"></stat-nav>
+      <stat-nav class="stat__nav col-sm-3" @select="selectNavItem($event)"></stat-nav>
 
-      <b-card class="stat__card col-sm-10">
+      <b-card class="stat__card col-sm-9">
         <div class="stat__charts">
 
           <div v-show="selected === 'rentals'">
@@ -60,8 +60,8 @@ import RentCount from './dashboard/RentCount'
 import RentHoursChart from './dashboard/RentHoursChart'
 import RentCashProceedChart from './dashboard/RentCashProceedChart'
 import DatePanel from './DatePanel'
-import StatNav from './StatNav'
-import {writeLog} from '@/functions/logs'
+import StatNav from './components/StatNav'
+import { writeLog } from '@/functions/logs'
 import * as shortDate from '@/functions/date'
 
 export default {

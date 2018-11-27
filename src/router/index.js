@@ -31,7 +31,7 @@ const Popovers = () => import('@/views/base/Popovers')
 const ProgressBars = () => import('@/views/base/ProgressBars')
 const Tooltips = () => import('@/views/base/Tooltips')
 
-const RentalLocations = () => import('@/views/base/RentalLocations')
+const RentalLocations = () => import('@/views/components/RentalLocations')
 
 // Views - Buttons
 const StandardButtons = () => import('@/views/buttons/StandardButtons')
