@@ -17,13 +17,11 @@
                 {{ item.name }}
               </b-list-group-item>
             </b-list-group>
-          </b-card>
-          <b-card>
-            <b-row class="align-items-center">
-              <b-col sm="12">
-                <b-button block variant="outline-primary">Добавить</b-button>
-                <b-button block variant="outline-secondary">Изменить</b-button>
-                <b-button block variant="outline-danger">Удалить</b-button>
+            <b-row class="btns align-items-center">
+              <b-col class="d-flex justify-content-between" sm="12">
+                <b-button variant="outline-primary">Добавить</b-button>
+                <b-button variant="outline-secondary">Изменить</b-button>
+                <b-button variant="outline-danger">Удалить</b-button>
               </b-col>
             </b-row>
           </b-card>
@@ -77,16 +75,18 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
 
-.active {
-
-}
+  .btns {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
