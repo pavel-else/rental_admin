@@ -6,7 +6,7 @@
 export default {
   name: 'app',
   beforeCreate() {
-    this.$store.dispatch('send');
+    //this.$store.dispatch('send');
     this.$store.dispatch('initState');
   }
 }

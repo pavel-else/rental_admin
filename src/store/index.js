@@ -36,38 +36,23 @@ export default new Vuex.Store({
   },
 
   actions: {
-    initState({ commit }) {
-
-    },
-    send({ commit, dispatch }) {
-      console.log('front --> back');
-
-      const url = 'http://overhost.net/rental2/api_v1/ajax/App/request.php';
-      const config = {};
-      const cmds = [
+    initState({ commit, dispatch }) {
+      const queue = [
         'getHistory',
         'getSubOrders',
         'getRentalLocations' 
-      ];
-      const queue = cmds.map(i => {
-        return { cmd: i, value: '' }
+      ].map(i => {
+        return { cmd: i, value: '' };
       });
 
-     // send(queue).then(r=>{console.log('r',r)})
-
-
-      axios({ method: 'post', url, data: { queue }, config })
-      .catch(e => {
-        console.log(e);
-      })
-      .then(r => {
-        console.log('front <-- back', r);
+      send(queue).then(r => {
         dispatch('setData', { 
           _orders: r.data.history, 
           _subOrders: r.data.sub_orders,
           _rental_locations: r.data.rental_locations
         });
       });
+
     },
 
     setData({ commit }, { _subOrders, _orders, _rental_locations }) {
@@ -250,7 +235,17 @@ export default new Vuex.Store({
   }
 });
 
-const send = async (data) => {
+const send = (data) => {
+  console.log('front --> back');
   const url = 'http://overhost.net/rental2/api_v1/ajax/App/request.php';
-  return axios({ method: 'post', url, data: { queue: data } }).catch(e => { console.log(e) });
+
+  const result = axios({ method: 'post', url, data: { queue: data } }).catch(e => { 
+    console.log(e);
+  });
+
+  result.then(r => {
+    console.log('front <-- back', r);
+  });
+
+  return result;
 };
