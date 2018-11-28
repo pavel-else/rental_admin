@@ -12,16 +12,17 @@
               <b-list-group-item
                 v-for="item in rentalLocations"
                 @click="selectRental(item)"
-                :active="selectedRental.id_rental === item.id_rental"
+                @dblclick="wrapToChange(item)"
+                :active="selected.id_rental === item.id_rental"
               >
                 {{ item.name }}
               </b-list-group-item>
             </b-list-group>
             <b-row class="btns align-items-center">
               <b-col class="d-flex justify-content-between" sm="12">
-                <b-button variant="outline-primary">Добавить</b-button>
-                <b-button variant="outline-secondary">Изменить</b-button>
-                <b-button variant="outline-danger">Удалить</b-button>
+                <b-button class="r-lock__btn" @click="add()" :disabled="mod === 'add'" variant="outline-primary">Добавить</b-button>
+                <b-button class="r-lock__btn" @click="change()" :disabled="mod !== 'view'" variant="outline-secondary">Изменить</b-button>
+                <b-button class="r-lock__btn" @click="remove()" :disabled="!(mod !== 'view' || mod !== 'add')" variant="outline-danger">Удалить</b-button>
               </b-col>
             </b-row>
           </b-card>
@@ -29,8 +30,13 @@
       <b-col sm="8">
         <b-card>
           <div slot="header">
-            <strong>Детальная информация</strong>
-            <rental-details :rental="selectedRental"></rental-details>
+            <strong>{{ caption }}</strong>
+            <rental-details 
+              :selectedRental="selected" 
+              :mod="mod" 
+              @save="detailsSave($event)" 
+              @cancel="detailsCancel()"
+            ></rental-details>
           </div>          
         </b-card>
       </b-col>
@@ -47,15 +53,41 @@ export default {
   },
   data () {
     return {
-      selectedRental: {},
+      selected: {},
+      mod: 'view', // view || add || edit
+      caption: 'Детальная информация',
     }
   },
   methods: {
     selectRental(rental) {
-      this.selectedRental = rental;
+      this.selected = rental;
+      this.mod = 'view';
+      this.caption = 'Детальная информация';
     },
     setActiveDefault() {
-      this.selectedRental = this.rentalLocations ? this.rentalLocations[0] : {};
+      this.selected = this.rentalLocations ? this.rentalLocations[0] : {};
+    },
+    add() {
+      this.mod = 'add';
+      this.caption = 'Добавить точку проката';
+      this.selected = {};
+    },
+    change() {
+      this.mod = 'edit';
+      this.caption = 'Обновить информацию';
+    },
+    remove() {
+    },
+    detailsSave(rental) {
+      this.$store.dispatch('saveRentalPoint', rental);
+    },
+    detailsCancel() {
+      this.mod = 'view';
+      this.caption = 'Детальная информация';
+    },
+    wrapToChange(rental) {
+      this.selectRental(rental);
+      this.change();
     }
   },
   computed: {
@@ -89,4 +121,10 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+  .r-lock__btn {
+    display: block;
+    flex-grow: 1;
+    margin: 0 5px;
+  }
+
 </style>

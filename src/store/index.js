@@ -14,7 +14,8 @@ export default new Vuex.Store({
     rentalLocations: [],
     orders: [],
     subOrders: [],
-    statistics: {}
+    statistics: {},
+    instance: null
   },
   mutations: {
     setRentalLocations(state, renalLocations) {
@@ -28,10 +29,16 @@ export default new Vuex.Store({
     },
     setStatistics(state, statistics) {
       state.statistics = statistics;
+    },
+    setToState(state, { name, value }) {
+      state[name] = value;
     }
   },
 
   actions: {
+    initState({ commit }) {
+
+    },
     send({ commit, dispatch }) {
       console.log('front --> back');
 
@@ -43,8 +50,11 @@ export default new Vuex.Store({
         'getRentalLocations' 
       ];
       const queue = cmds.map(i => {
-        return {cmd: i}
-      });    
+        return { cmd: i, value: '' }
+      });
+
+     // send(queue).then(r=>{console.log('r',r)})
+
 
       axios({ method: 'post', url, data: { queue }, config })
       .catch(e => {
@@ -174,6 +184,15 @@ export default new Vuex.Store({
       // SET STATISTICS
       const statistics = Stat.create(subOrders);
       commit('setStatistics', statistics);
+    },
+
+    saveRentalPoint({ commit }, point) {
+      send({ cmd: 'setRentalPoint', value: point }).then(r => {
+        console.log(r.data);
+        if (r.data.rental_points) {
+          commit('setToState', { name: 'points', value: r.data.rental_points });
+        }
+      });      
     }
   },
 
@@ -230,3 +249,8 @@ export default new Vuex.Store({
     }
   }
 });
+
+const send = async (data) => {
+  const url = 'http://overhost.net/rental2/api_v1/ajax/App/request.php';
+  return axios({ method: 'post', url, data: { queue: data } }).catch(e => { console.log(e) });
+};
