@@ -11,16 +11,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    rentalLocations: [],
+    rentalPoints: [],
     orders: [],
     subOrders: [],
     statistics: {},
     instance: null
   },
   mutations: {
-    setRentalLocations(state, renalLocations) {
-      state.rentalLocations = renalLocations;
-    },
     setOrders(state, orders) {
       state.orders = orders;
     },
@@ -40,7 +37,7 @@ export default new Vuex.Store({
       const queue = [
         'getHistory',
         'getSubOrders',
-        'getRentalLocations' 
+        'getRentalPoints'
       ].map(i => {
         return { cmd: i, value: '' };
       });
@@ -49,24 +46,23 @@ export default new Vuex.Store({
         dispatch('setData', { 
           _orders: r.data.history, 
           _subOrders: r.data.sub_orders,
-          _rental_locations: r.data.rental_locations
+          _rental_points: r.data.rental_points
         });
       });
-
     },
 
-    setData({ commit }, { _subOrders, _orders, _rental_locations }) {
+    setData({ commit }, { _subOrders, _orders, _rental_points }) {
       //
       // SET RENTAL LOCATIONS
-      if (!_rental_locations) {
-        writeLog('State, setData, rental locations', 'empty data', { _rental_locations });
+      if (!_rental_points) {
+        writeLog('State, setData, rental points', 'empty data', { _rental_points });
         return false;
       }
-      const renalLocations = _rental_locations.reduce((acc, item) => {
+      const rentalPoints = _rental_points.reduce((acc, item) => {
         acc.push(item);
         return acc;
       }, []);
-      commit('setRentalLocations', renalLocations);
+      commit('setToState', { name: 'rentalPoints', value: rentalPoints });
 
       //
       // SET ORDERS
@@ -172,7 +168,7 @@ export default new Vuex.Store({
     },
 
     saveRentalPoint({ commit }, point) {
-      send({ cmd: 'setRentalPoint', value: point }).then(r => {
+      send([{ cmd: 'setRentalPoint', value: point }]).then(r => {
         console.log(r.data);
         if (r.data.rental_points) {
           commit('setToState', { name: 'points', value: r.data.rental_points });
@@ -182,7 +178,7 @@ export default new Vuex.Store({
   },
 
   getters: {
-    getRentalLocations: state => state.rentalLocations,
+    getRentalPoints: state => state.rentalPoints,
     orders: state => state.orders,
     subOrders: state => state.subOrders,
 

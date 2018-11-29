@@ -10,7 +10,7 @@
             </div>
             <b-list-group>
               <b-list-group-item
-                v-for="item in rentalLocations"
+                v-for="item in rentalPoints"
                 @click="selectRental(item)"
                 @dblclick="wrapToChange(item)"
                 :active="selected.id_rental === item.id_rental"
@@ -47,7 +47,7 @@
 <script>
 import RentalDetails from '@/views/components/RentalDetails'
 export default {
-  name: 'RentalLocations',
+  name: 'RentalPoints',
   components: {
     RentalDetails
   },
@@ -65,7 +65,7 @@ export default {
       this.caption = 'Детальная информация';
     },
     setActiveDefault() {
-      this.selected = this.rentalLocations ? this.rentalLocations[0] : {};
+      this.selected = this.rentalPoints ? this.rentalPoints[0] : {};
     },
     add() {
       this.mod = 'add';
@@ -91,12 +91,12 @@ export default {
     }
   },
   computed: {
-    rentalLocations() {
-      return this.$store.getters.getRentalLocations;
+    rentalPoints() {
+      return this.$store.getters.getRentalPoints;
     }
   },
   watch: {
-    rentalLocations() {
+    rentalPoints() {
       this.setActiveDefault();
     }
   },
