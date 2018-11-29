@@ -28,6 +28,7 @@ export default new Vuex.Store({
       state.statistics = statistics;
     },
     setToState(state, { name, value }) {
+      console.log('setToState')
       state[name] = value;
     }
   },
@@ -167,18 +168,33 @@ export default new Vuex.Store({
       commit('setStatistics', statistics);
     },
 
-    saveRentalPoint({ commit }, point) {
-      send([{ cmd: 'setRentalPoint', value: point }]).then(r => {
-        console.log(r.data);
+    createRentalPoint({ commit }, point) {
+      send([{ cmd: 'createRentalPoint', value: point }, { cmd: 'getRentalPoints'}]).then(r => {
         if (r.data.rental_points) {
-          commit('setToState', { name: 'points', value: r.data.rental_points });
+          commit('setToState', { name: 'rentalPoints', value: r.data.rental_points });
         }
       });      
-    }
+    },
+    updateRentalPoint({ commit }, point) {
+      send([{ cmd: 'updateRentalPoint', value: point },  { cmd: 'getRentalPoints' }]).then(r => {
+        if (r.data.rental_points) {
+          commit('setToState', { name: 'rentalPoints', value: r.data.rental_points });
+        }       
+      });
+    },
+    removeRentalPoint({ commit }, id_rent) {
+      send([{ cmd: 'removeRentalPoint', value: id_rent },  { cmd: 'getRentalPoints' }]).then(r => {
+        if (r.data.rental_points) {
+          commit('setToState', { name: 'rentalPoints', value: r.data.rental_points });
+        }       
+      });
+    },
   },
 
   getters: {
-    getRentalPoints: state => state.rentalPoints,
+    getRentalPoints(state) {
+      return state.rentalPoints;
+    },
     orders: state => state.orders,
     subOrders: state => state.subOrders,
 

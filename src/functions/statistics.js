@@ -182,7 +182,7 @@ export const getRentCashPerDay = (statistics, from, to, id) => {
     }
     return acc;
   }, {});
-  console.log(collapse)
+
   // Готовим статистику Для каждого часа в в виде
   // [0, 0, 0, 2, 0]
   const period = shortDate.createPeriod(from, to, 'Day');
@@ -195,7 +195,7 @@ export const getRentCashPerDay = (statistics, from, to, id) => {
 export const getRentHours = (statistics, from, to, id) => {
   const list = select(statistics, from, to, id);
 
-  console.log(list)
+
   if (!list) {
     writeLog('statistics.js, getRentHours', 'not statistics entered', { list });
     return [];
@@ -219,7 +219,7 @@ export const getRentHours = (statistics, from, to, id) => {
     return acc;
   }, []);
 
-  console.log('result', result);
+
   return result;
 };
 

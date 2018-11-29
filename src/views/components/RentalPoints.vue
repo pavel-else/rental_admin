@@ -13,7 +13,7 @@
                 v-for="item in rentalPoints"
                 @click="selectRental(item)"
                 @dblclick="wrapToChange(item)"
-                :active="selected.id_rental === item.id_rental"
+                :active="selected.id_rent === item.id_rent"
               >
                 {{ item.name }}
               </b-list-group-item>
@@ -46,6 +46,7 @@
 
 <script>
 import RentalDetails from '@/views/components/RentalDetails'
+import { writeLog } from '@/functions/logs'
 export default {
   name: 'RentalPoints',
   components: {
@@ -54,7 +55,7 @@ export default {
   data () {
     return {
       selected: {},
-      mod: 'view', // view || add || edit
+      mod: 'view', // view || add || upd
       caption: 'Детальная информация',
     }
   },
@@ -73,13 +74,24 @@ export default {
       this.selected = {};
     },
     change() {
-      this.mod = 'edit';
+      this.mod = 'upd';
       this.caption = 'Обновить информацию';
     },
     remove() {
+      if (!this.selected.id_rent) {
+        writeLog('RentalPoints.vue, remove', 'id_rent is not defined', { id_rent: this.selected.id_rent })
+      }
+      if (confirm('Вы действительно хотите удалить выбранный пункт проката?')) {
+        this.$store.dispatch('removeRentalPoint', this.selected.id_rent);
+      }
     },
     detailsSave(rental) {
-      this.$store.dispatch('saveRentalPoint', rental);
+      if (this.mod === 'add') {
+        this.$store.dispatch('createRentalPoint', rental);
+      }
+      if (this.mod === 'upd') {
+        this.$store.dispatch('updateRentalPoint', rental);
+      }
     },
     detailsCancel() {
       this.mod = 'view';
