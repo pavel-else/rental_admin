@@ -6,6 +6,7 @@ import 'core-js/es7/array'
 // import cssVars from 'css-vars-ponyfill'
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
+import axios from 'axios'
 import App from './App'
 import router from './router'
 import store from './store'
@@ -13,7 +14,12 @@ import store from './store'
 // todo
 // cssVars()
 
-Vue.use(BootstrapVue)
+const token = localStorage.getItem('user-token');
+if (token) {
+  axios.defaults.headers.common['Authorization'] = token;
+}
+
+Vue.use(BootstrapVue);
 
 /* eslint-disable no-new */
 new Vue({
@@ -24,4 +30,4 @@ new Vue({
   components: {
     App
   }
-})
+});

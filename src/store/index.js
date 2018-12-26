@@ -6,10 +6,16 @@ import * as Stat from '@/functions/statistics'
 import { writeLog } from '@/functions/logs'
 import * as shortDate from '@/functions/date'
 
+import auth from './auth-module'
+
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  modules: {
+    auth
+  },
+  
   state: {
     rentalPoints: [],
     orders: [],

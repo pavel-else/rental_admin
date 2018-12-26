@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store'
 
 // Containers
 const DefaultContainer = () => import('@/containers/DefaultContainer')
@@ -62,6 +63,22 @@ const User = () => import('@/views/users/User')
 
 Vue.use(Router)
 
+const ifNotAuthenticated = (to, from, next) => {
+  if (!store.getters.isAuthenticated) {
+    next();
+    return;
+  }
+  next('/');
+};
+
+const ifAuthenticated = (to, from, next) => {
+  if (store.getters.isAuthenticated) {
+    next();
+    return;
+  }
+  next('/Pages/Login');
+};
+
 export default new Router({
   mode: 'hash', // https://router.vuejs.org/api/#mode
   linkActiveClass: 'open active',
@@ -72,6 +89,7 @@ export default new Router({
       redirect: '/dashboard',
       name: 'Home',
       component: DefaultContainer,
+      beforeEnter: ifAuthenticated,
       children: [
         {
           path: 'dashboard',
@@ -330,7 +348,8 @@ export default new Router({
         {
           path: 'login',
           name: 'Login',
-          component: Login
+          component: Login,
+          beforeEnter: ifNotAuthenticated,
         },
         {
           path: 'register',
