@@ -17,6 +17,7 @@ export default new Vuex.Store({
   },
   
   state: {
+    url: 'http://192.168.10.10',
     rentalPoints: [],
     orders: [],
     subOrders: [],
@@ -198,6 +199,9 @@ export default new Vuex.Store({
   },
 
   getters: {
+    url(state) {
+      return state.url;
+    },
     getRentalPoints(state) {
       return state.rentalPoints;
     },

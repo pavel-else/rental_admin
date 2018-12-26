@@ -12,11 +12,7 @@
                   <b-input-group class="mb-3">
                     <b-input-group-prepend><b-input-group-text><i class="icon-user"></i></b-input-group-text></b-input-group-prepend>
                     <b-form-input type="text" class="form-control" v-model="email" placeholder="email" autocomplete="username email" />
-                  </b-input-group><!-- 
-                  <b-input-group class="mb-3">
-                    <b-input-group-prepend><b-input-group-text><i class="icon-user"></i></b-input-group-text></b-input-group-prepend>
-                    <b-form-input type="text" class="form-control" v-model="username" placeholder="Username" autocomplete="username email" />
-                  </b-input-group> -->
+                  </b-input-group>
                   <b-input-group class="mb-4">
                     <b-input-group-prepend><b-input-group-text><i class="icon-lock"></i></b-input-group-text></b-input-group-prepend>
                     <b-form-input type="password" class="form-control" v-model="password" placeholder="Password" autocomplete="current-password" />
@@ -37,7 +33,7 @@
                 <div>
                   <h2>Sign up</h2>
                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  <b-button variant="primary" class="active mt-3">Register Now!</b-button>
+                  <b-button variant="primary" class="active mt-3" @click="register()">Register Now!</b-button>
                 </div>
               </b-card-body>
             </b-card>
@@ -53,18 +49,19 @@ export default {
   name: 'Login',
   data() {
     return {
-      username: null,
       password: null,
       email: null
     }
   },
   methods: {
     login() {
-      const { username, email, password } = this;
-      this.$store.dispatch('AUTH_REQUEST', { username, email, password }). then(() => {
+      const { email, password } = this;
+      this.$store.dispatch('AUTH_REQUEST', { email, password }). then(() => {
         this.$router.push('/');
-      })
-
+      });
+    },
+    register() {
+      this.$router.push('/Pages/Register');
     }
   }
 }

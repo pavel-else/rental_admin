@@ -14,12 +14,12 @@ export default {
         }
     },
     actions: {
-        AUTH_REQUEST({ commit, dispath }, user) {
+        AUTH_REQUEST({ getters, commit, dispath }, user) {
             return new Promise((resolve, reject) => {
                 commit('AUTH_REQUEST');
 
                 axios({ 
-                    url: 'http://192.168.10.10:80/api/login', 
+                    url: getters.url + '/api/login', 
                     data: user, 
                     method: 'POST', 
                 })
@@ -38,7 +38,28 @@ export default {
                 });
             });
         },
-        AUTH_LOGOUT({ commit, dispatc }) {
+        AUTH_REGISTER({ getters, commit, dispatch}, user) {
+            return new Promise((resolve, reject) => {
+                axios({
+                    url: getters.url + '/api/register',
+                    data: user,
+                    method: 'POST'
+                })
+                .then(resp => {
+                    const token = resp.data.success.token;
+                    axios.defaults.headers.common['Authorization'] = token;
+                    commit('AUTH_SUCCESS', token);
+                    localStorage.setItem('user-token', token);
+                    resolve(resp);
+                })
+                .catch(err => {
+                    commit('AUTH_ERROR', err);                  
+                    localStorage.removeItem('user-token');
+                    reject(err);
+                });
+            });
+        },
+        AUTH_LOGOUT({ commit, dispatch }) {
             return new Promise((resolve, reject) => {
                 commit('AUTH_LOGOUT');
                 localStorage.removeItem('user-token');
