@@ -7,17 +7,20 @@ import { writeLog } from '@/functions/logs'
 import * as shortDate from '@/functions/date'
 
 import auth from './auth-module'
+import user from './user-module'
 
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    auth
+    auth,
+    user
   },
   
   state: {
-    url: 'http://192.168.10.10',
+    // url: 'http://193.9.60.90:8000',
+    url: 'http://127.0.0.1:8000',
     rentalPoints: [],
     orders: [],
     subOrders: [],

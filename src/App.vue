@@ -6,8 +6,13 @@
 export default {
   name: 'app',
   beforeCreate() {
+    if (!localStorage.getItem('user-token')) {
+      this.$router.push('/Pages/Login');
+    } else {
+      this.$store.dispatch('USER_REQUEST');
+    }
     //this.$store.dispatch('send');
-    this.$store.dispatch('initState');
+    //this.$store.dispatch('initState');
   }
 }
 </script>
@@ -29,6 +34,7 @@ export default {
   // Import Main styles for this application
   @import 'assets/scss/style';
 
+// TODO : make import for normalize.css
   ul {
     list-style: none;
     margin: 0;

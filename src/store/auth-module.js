@@ -19,6 +19,7 @@ export default {
                 commit('AUTH_REQUEST');
 
                 axios({ 
+                    // url: getters.url + '/api/test', 
                     url: getters.url + '/api/login', 
                     data: user, 
                     method: 'POST', 
@@ -28,7 +29,7 @@ export default {
                     axios.defaults.headers.common['Authorization'] = token;
                     commit('AUTH_SUCCESS', token);
                     localStorage.setItem('user-token', token);
-                    //dispatch('USER_REQUEST');
+                    // dispatch('USER_REQUEST');
                     resolve(resp);
                 })
                 .catch(err => {

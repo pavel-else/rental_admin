@@ -14,24 +14,36 @@ export default {
         }
     },
     actions: {
-        USER_REQUEST({ commit, dispath }) {
-            commit('USER_REQUEST');
+        USER_REQUEST({ commit, dispath, getters }) {
+            //commit('USER_REQUEST');
 
-            axios({
-                url: 'http://192.168.10.10:80/api/details
+            axios({ 
+                url: getters.url + '/api/test', 
+                data: {"name":"name"}, 
+                method: 'POST', 
             })
+            .then(resp => {
+                console.log('resp', resp);
+                resolve(resp);
+            })
+            .catch(err => {
+                console.log('err', err)
+                // commit('AUTH_ERROR', err);                  
+                // localStorage.removeItem('user-token');
+                // reject(err);
+            });
         }
     },
     mutations: {
-        AUTH_REQUEST(state) {
-            state.status = 'loading';
-        },
-        AUTH_SUCCESS(state, token) {
-            state.status = 'success';
-            state.token = token;
-        },
-        AUTH_ERROR(state) {
-            state.status = 'error';
-        }
+        // AUTH_REQUEST(state) {
+        //     state.status = 'loading';
+        // },
+        // AUTH_SUCCESS(state, token) {
+        //     state.status = 'success';
+        //     state.token = token;
+        // },
+        // AUTH_ERROR(state) {
+        //     state.status = 'error';
+        // }
     }
 };
