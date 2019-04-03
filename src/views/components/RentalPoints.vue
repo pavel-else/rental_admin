@@ -45,77 +45,80 @@
 </template>
 
 <script>
-import RentalDetails from '@/views/components/RentalDetails'
-import { writeLog } from '@/functions/logs'
-export default {
-  name: 'RentalPoints',
-  components: {
-    RentalDetails
-  },
-  data () {
-    return {
-      selected: {},
-      mod: 'view', // view || add || upd
-      caption: 'Детальная информация',
-    }
-  },
-  methods: {
-    selectRental(rental) {
-      this.selected = rental;
-      this.mod = 'view';
-      this.caption = 'Детальная информация';
+  import RentalDetails from '@/views/components/RentalDetails'
+  import { writeLog } from '@/functions/logs'
+  export default {
+    name: 'RentalPoints',
+    components: {
+      RentalDetails
     },
-    setActiveDefault() {
-      this.selected = this.rentalPoints ? this.rentalPoints[0] : {};
+    beforeCreate() {
+      this.$store.dispatch('getRentalPoints');
     },
-    add() {
-      this.mod = 'add';
-      this.caption = 'Добавить точку проката';
-      this.selected = {};
-    },
-    change() {
-      this.mod = 'upd';
-      this.caption = 'Обновить информацию';
-    },
-    remove() {
-      if (!this.selected.id_rent) {
-        writeLog('RentalPoints.vue, remove', 'id_rent is not defined', { id_rent: this.selected.id_rent })
-      }
-      if (confirm('Вы действительно хотите удалить выбранный пункт проката?')) {
-        this.$store.dispatch('removeRentalPoint', this.selected.id_rent);
+    data () {
+      return {
+        selected: {},
+        mod: 'view', // view || add || upd
+        caption: 'Детальная информация',
       }
     },
-    detailsSave(rental) {
-      if (this.mod === 'add') {
-        this.$store.dispatch('createRentalPoint', rental);
-      }
-      if (this.mod === 'upd') {
-        this.$store.dispatch('updateRentalPoint', rental);
+    methods: {
+      selectRental(rental) {
+        this.selected = rental;
+        this.mod = 'view';
+        this.caption = 'Детальная информация';
+      },
+      setActiveDefault() {
+        this.selected = this.rentalPoints ? this.rentalPoints[0] : {};
+      },
+      add() {
+        this.mod = 'add';
+        this.caption = 'Добавить точку проката';
+        this.selected = {};
+      },
+      change() {
+        this.mod = 'upd';
+        this.caption = 'Обновить информацию';
+      },
+      remove() {
+        if (!this.selected.id_rent) {
+          writeLog('RentalPoints.vue, remove', 'id_rent is not defined', { id_rent: this.selected.id_rent })
+        }
+        if (confirm('Вы действительно хотите удалить выбранный пункт проката?')) {
+          this.$store.dispatch('removeRentalPoint', this.selected.id_rent);
+        }
+      },
+      detailsSave(rental) {
+        if (this.mod === 'add') {
+          this.$store.dispatch('createRentalPoint', rental);
+        }
+        if (this.mod === 'upd') {
+          this.$store.dispatch('updateRentalPoint', rental);
+        }
+      },
+      detailsCancel() {
+        this.mod = 'view';
+        this.caption = 'Детальная информация';
+      },
+      wrapToChange(rental) {
+        this.selectRental(rental);
+        this.change();
       }
     },
-    detailsCancel() {
-      this.mod = 'view';
-      this.caption = 'Детальная информация';
+    computed: {
+      rentalPoints() {
+        return this.$store.getters.rentalPoints;
+      }
     },
-    wrapToChange(rental) {
-      this.selectRental(rental);
-      this.change();
-    }
-  },
-  computed: {
-    rentalPoints() {
-      return this.$store.getters.getRentalPoints;
-    }
-  },
-  watch: {
-    rentalPoints() {
+    watch: {
+      rentalPoints() {
+        this.setActiveDefault();
+      }
+    },
+    created(){
       this.setActiveDefault();
     }
-  },
-  created(){
-    this.setActiveDefault();
   }
-}
 </script>
 
 <style scoped>

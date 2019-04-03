@@ -9,7 +9,7 @@ export default {
     if (!localStorage.getItem('user-token')) {
       this.$router.push('/Pages/Login');
     } else {
-      this.$store.dispatch('USER_REQUEST');
+      this.$router.push('/');
     }
     //this.$store.dispatch('send');
     //this.$store.dispatch('initState');

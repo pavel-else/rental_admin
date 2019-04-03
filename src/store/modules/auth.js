@@ -13,23 +13,41 @@ export default {
             return state.status;
         }
     },
-    actions: {
-        AUTH_REQUEST({ getters, commit, dispath }, user) {
-            return new Promise((resolve, reject) => {
-                commit('AUTH_REQUEST');
+    mutations: {
+        token(state, token) {
+            console.log('commit: token', token);
 
-                axios({ 
-                    // url: getters.url + '/api/test', 
-                    url: getters.url + '/api/login', 
-                    data: user, 
+            state.status = 'success';
+            state.token = token;
+        },
+        AUTH_REQUEST(state) {
+            state.status = 'loading';
+        },
+        AUTH_ERROR(state) {
+            state.status = 'error';
+        },
+        AUTH_LOGOUT(state) {
+            state.token = '';
+            state.status = '';
+        }
+    },
+    actions: {
+        login({ getters, commit, dispatch }, user) {
+            return new Promise((resolve, reject) => {
+                console.log('dispatch: login');
+
+                axios({  
+                    url: getters.url, 
+                    data: { cmd: 'login', value: user },
                     method: 'POST', 
                 })
                 .then(resp => {
-                    const token = resp.data.success.token;
-                    axios.defaults.headers.common['Authorization'] = token;
-                    commit('AUTH_SUCCESS', token);
+                    console.log(resp)
+                    const token = resp.data.token;
+
+                    //axios.defaults.headers.common['Authorization'] = token;
+                    commit('token', token);
                     localStorage.setItem('user-token', token);
-                    // dispatch('USER_REQUEST');
                     resolve(resp);
                 })
                 .catch(err => {
@@ -69,21 +87,4 @@ export default {
             });
         }
     },
-    mutations: {
-        AUTH_REQUEST(state) {
-            state.status = 'loading';
-        },
-        AUTH_SUCCESS(state, token) {
-            console.log(token)
-            state.status = 'success';
-            state.token = token;
-        },
-        AUTH_ERROR(state) {
-            state.status = 'error';
-        },
-        AUTH_LOGOUT(state) {
-            state.token = '';
-            state.status = '';
-        }
-    }
 };

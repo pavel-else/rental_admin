@@ -56,7 +56,9 @@ export default {
   methods: {
     login() {
       const { email, password } = this;
-      this.$store.dispatch('AUTH_REQUEST', { email, password }). then(() => {
+      
+      this.$store.dispatch('login', { email, password })
+      .then(() => {
         this.$router.push('/');
       });
     },

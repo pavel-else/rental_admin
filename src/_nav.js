@@ -29,7 +29,7 @@ export default {
     //   icon: 'icon-chart'
     // },
     {
-      name: 'Пункты проката',
+      name: 'Точки проката',
       url: '/rental-points',
       icon: 'icon-location-pin'
     },
