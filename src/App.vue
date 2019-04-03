@@ -8,11 +8,7 @@ export default {
   beforeCreate() {
     if (!localStorage.getItem('user-token')) {
       this.$router.push('/Pages/Login');
-    } else {
-      this.$router.push('/');
     }
-    //this.$store.dispatch('send');
-    //this.$store.dispatch('initState');
   }
 }
 </script>
@@ -39,5 +35,8 @@ export default {
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+  .pointer {
+    cursor: pointer;
   }
 </style>

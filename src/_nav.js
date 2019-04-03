@@ -40,7 +40,7 @@ export default {
     },
     {
       name: 'Товары',
-      url: '/theme/colors',
+      url: '/products',
       icon: 'fa fa-bicycle'
     },
     {

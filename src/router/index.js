@@ -32,7 +32,9 @@ const Popovers = () => import('@/views/base/Popovers')
 const ProgressBars = () => import('@/views/base/ProgressBars')
 const Tooltips = () => import('@/views/base/Tooltips')
 
-const RentalPoints = () => import('@/views/components/RentalPoints')
+const RentalPoints = () => import('@/views/components/RentalPoints');
+const Products = () => import('@/views/components/Products');
+
 
 // Views - Buttons
 const StandardButtons = () => import('@/views/buttons/StandardButtons')
@@ -100,6 +102,11 @@ export default new Router({
           path: 'rental-points',
           name: 'RentalPoints',
           component: RentalPoints
+        },
+        {
+          path: 'products',
+          name: 'Products',
+          component: Products
         },
         {
           path: 'theme',
