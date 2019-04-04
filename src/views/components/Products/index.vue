@@ -1,6 +1,6 @@
 <template>
   <div class="animated fadeIn">
-    <b-row>
+    <b-row v-if="!showDetails">
       <b-col sm="4">
           <b-card
             header-tag="header"
@@ -13,7 +13,7 @@
                 class="pointer"
                 v-for="item in rentalPoints"
                 @click="selectRental(item)"
-                :active="selected.id_rent === item.id_rent"
+                :active="selectedPoint.id_rent === item.id_rent"
               >
                 {{ item.name }} {{ item.id_rent }}
               </b-list-group-item>
@@ -33,6 +33,7 @@
               <b-list-group-item
                 class="pointer"
                 v-for="item in products"
+                @click="selectProduct(item)"
               >
                 {{ item.name }}
               </b-list-group-item>
@@ -40,11 +41,30 @@
         </b-card>
       </b-col>
     </b-row>
+
+    <!-- Детальная информация -->
+    <b-row v-if="showDetails" class="d-flex justify-content-center">
+      <b-col sm="8">
+        <b-card>
+          <div slot="header" class="d-flex justify-content-between">
+            <strong>Детальная информация</strong>
+            <b-button class="category" variant="outline-danger" @click="showDetails = false">X</b-button>
+          </div>
+
+          <Details :_product="selectedProduct" striped caption="<i class='fa fa-align-justify'></i> Striped Table"></Details>
+
+        </b-card>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
+  import Details from './Details';
   export default {
+    components: {
+      Details
+    },
     beforeCreate() {
       this.$store.dispatch('multiRequest', [
         { cmd: 'getRentalPoints' },
@@ -52,18 +72,24 @@
       ])
       .then(() => {
         if (this.rentalPoints && this.rentalPoints.length > 0) {
-          this.selected = this.rentalPoints[0];
+          this.selectedPoint = this.rentalPoints[0];
         }
       });
     },
     data() {
       return {
-        selected: {}
+        selectedPoint: {},
+        selectedProduct: {},
+        showDetails: false
       }
     },
     methods: {
       selectRental(point) {
-        this.selected = point;
+        this.selectedPoint = point;
+      },
+      selectProduct(product) {
+        this.selectedProduct = product;
+        this.showDetails = true;
       }
     },
     computed: {
@@ -77,7 +103,7 @@
           return [];
         }
 
-        const rentalPointId = this.selected ? this.selected.id_rent : false;
+        const rentalPointId = this.selectedPoint ? this.selectedPoint.id_rent : false;
 
         if (!rentalPointId) {
           return [];
