@@ -45,15 +45,7 @@
     <!-- Детальная информация -->
     <b-row v-if="showDetails" class="d-flex justify-content-center">
       <b-col sm="8">
-        <b-card>
-          <div slot="header" class="d-flex justify-content-between">
-            <strong>Детальная информация</strong>
-            <b-button class="category" variant="outline-danger" @click="showDetails = false">X</b-button>
-          </div>
-
-          <Details :_product="selectedProduct" striped caption="<i class='fa fa-align-justify'></i> Striped Table"></Details>
-
-        </b-card>
+        <Details :_product="selectedProduct" @close="showDetails = false"></Details>
       </b-col>
     </b-row>
   </div>

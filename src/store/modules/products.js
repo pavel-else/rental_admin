@@ -44,35 +44,31 @@ export default {
                 })
             });            
         },
-        // setProduct({ commit, getters }, product) {
-        //     console.log('dispatch: setProduct', product);
+        setProduct({ commit, getters }, product) {
+            console.log('dispatch: setProduct', product);
 
-        //     return new Promise((resolve, reject) => {
-        //         axios({
-        //             method: 'post',
-        //             url: getters.url,
-        //             data: {
-        //                 queue: [
-        //                     { cmd: 'setProduct', value: product },
-        //                     { cmd: 'getProducts'},
-        //                     { cmd: 'getTariffs'},
-        //                     { cmd: 'getRentalPointInfo'}
-        //                 ],
-        //                 token: localStorage.getItem('user-token')
-        //             },                 
-        //         })
-        //         .then(r => {
-        //             console.log(r);
-        //             commit('rentalPointInfo', r.data.rental_point_info);
-        //             commit('tariffs', r.data.tariffs);
-        //             commit('products', r.data.products);
-        //         })
-        //         .catch(err => {
-        //             console.log(err);
-        //             reject(err);
-        //         });
-        //     });
-        // },
+            return new Promise((resolve, reject) => {
+                axios({
+                    method: 'post',
+                    url: getters.url,
+                    data: {
+                        queue: [
+                            { cmd: 'setProduct', value: product },
+                            { cmd: 'getProducts'}
+                        ],
+                        token: localStorage.getItem('user-token')
+                    },                 
+                })
+                .then(r => {
+                    console.log(r);
+                    commit('products', r.data.products);
+                })
+                .catch(err => {
+                    console.log(err);
+                    reject(err);
+                });
+            });
+        },
         // deleteProduct({ commit, getters }, id_rent) {
         //     console.log('dispatch: deleteProduct', id_rent);
 
