@@ -1,17 +1,18 @@
 <template>
   <div class="app">
-    <AppHeader fixed>
+    <AppHeader fixed class="d-flex">
       <SidebarToggler class="d-lg-none" display="md" mobile />
       <b-link class="navbar-brand navbar-brand--custom" to="#">
         <img class="navbar-brand-full" src="http://arm-prokat.ru/image/data/Logo_180.png" width="60" height="60" alt="CoreUI Logo">
         <img class="navbar-brand-minimized" src="img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
       </b-link>
       <SidebarToggler class="d-md-down-none" display="lg" />
-      <b-navbar-nav class="d-md-down-none">
+      <!--<b-navbar-nav class="d-md-down-none">
         <b-nav-item class="px-3" to="/dashboard">Dashboard</b-nav-item>
         <b-nav-item class="px-3" to="/users" exact>Users</b-nav-item>
         <b-nav-item class="px-3">Settings</b-nav-item>
-      </b-navbar-nav>
+      </b-navbar-nav> -->
+      <RentalPointSelect/>
       <b-navbar-nav class="ml-auto">
         <b-nav-item class="d-md-down-none">
           <i class="icon-bell"></i>
@@ -37,7 +38,7 @@
         <SidebarMinimizer/>
       </AppSidebar>
       <main class="main">
-        <Breadcrumb :list="list"/>
+        <!-- <Breadcrumb :list="list"/> -->
         <div class="container-fluid">
           <router-view></router-view>
         </div>
@@ -67,6 +68,8 @@ import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFoot
 import DefaultAside from './DefaultAside'
 import DefaultHeaderDropdownAccnt from './DefaultHeaderDropdownAccnt'
 
+import RentalPointSelect from '@/views/components/RentalPointSelect';
+
 export default {
   name: 'full',
   components: {
@@ -83,7 +86,8 @@ export default {
     SidebarToggler,
     SidebarHeader,
     SidebarNav,
-    SidebarMinimizer
+    SidebarMinimizer,
+    RentalPointSelect
   },
   data () {
     return {
@@ -100,3 +104,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .container-fluid {
+    margin-top: 20px;
+  }
+</style>
