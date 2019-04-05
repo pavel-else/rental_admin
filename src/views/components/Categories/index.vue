@@ -1,13 +1,18 @@
 <template>
-  <div id="myApp">
-    <DraggableTree :data="items" draggable crossTree>
-      <div slot-scope="{data, store, vm}">
-        <template v-if="!data.isDragPlaceHolder">
-          <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{data.open ? '-' : '+'}}&nbsp;</b>
-          <span>{{data.text}}</span>
-        </template>
+    <b-card>
+      <div slot="header">
+        <strong>Категории</strong>
       </div>
-    </DraggableTree>
+        
+      <DraggableTree :data="items" draggable crossTree @change='changeTree($event)'>
+        <div slot-scope="{data, store, vm}"  @click="selectCategory(data)">
+          <template v-if="!data.isDragPlaceHolder">
+            <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{data.open ? '-' : '+'}}&nbsp;</b>
+            <span>{{data.text}}</span>
+          </template>
+        </div>
+      </DraggableTree>
+    </b-card>
   </div>
 </template>
 <script>
@@ -18,38 +23,16 @@
     beforeCreate() {
       this.$store.dispatch('getCategories');
     },
-    data: function () {
-      return {
-        _items: [
-          {text: 'node 1'},
-          {text: 'node 2'},
-          {text: 'node 3 undraggable', draggable: false},
-          {text: 'node 4'},
-          {text: 'node 4 undroppable', droppable: false},
-          {text: 'node 5', children: [
-            {text: 'node 1'},
-            {text: 'node 2', children: [
-              {text: 'node 3'},
-              {text: 'node 4'},
-            ]},
-            {text: 'node 2 undroppable', droppable: false, children: [
-              {text: 'node 3'},
-              {text: 'node 4'},
-            ]},
-            {text: 'node 2', children: [
-              {text: 'node 3'},
-              {text: 'node 4 undroppable', droppable: false},
-            ]},
-            {text: 'node 3'},
-            {text: 'node 4'},
-            {text: 'node 3'},
-            {text: 'node 4'},
-            {text: 'node 3'},
-            {text: 'node 4'},
-            {text: 'node 3'},
-            {text: 'node 4'},
-          ]},
-        ]
+    methods: {
+      changeTree(node, targetTree) {
+        //this.data = targetTree.getPureData()
+      },
+      selectCategory(category) {
+        if (!category || !category.id_rent) {
+          return false;
+        }
+
+        this.$store.commit('activeCategory', category.id_rent);
       }
     },
     computed: {
@@ -86,7 +69,7 @@
 
           // Наращиваем на них детей
           const tree = addChildren(parentCategories);
-          
+
           return tree;
         };
 
@@ -97,3 +80,32 @@
     }
   }
 </script>
+<style lang="scss">
+  #app {
+    padding: 50px;
+  }
+
+  .he-tree {
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+  .tree-node {
+  }
+  .tree-node-inner {
+    padding: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  .draggable-placeholder {
+  }
+  .draggable-placeholder-inner {
+    border: 1px dashed #0088F8;
+    box-sizing: border-box;
+    background: rgba(0, 136, 249, 0.09);
+    color: #0088f9;
+    text-align: center;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+</style>

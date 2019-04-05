@@ -1,16 +1,29 @@
 <template>
-  <select class="custom-select" id="inlineFormCustomSelect">
-    <option>Adrenalin</option>
-    <option>Adrenalin 2</option>
+  <select class="custom-select" v-model="selected">
+    <option v-for="item in rentalPoints" :value="item.id_rent">{{ item.name }}</option>
   </select>
 </template>
 <script>
-	export default {
+  export default {
+    data() {
+      return {
+        selected: this.$store.getters.activeRentalPoints,
+      }
+    },
+    computed: {
+      rentalPoints() {
+        console.log('this.$store.getters.rentalPoints',this.$store.getters.activeRentalPoints)
+        return this.$store.getters.rentalPoints;
+      },
+      activePoint() {
+        return this.$store.getters.activeRentalPoints;
+      }
+    }
 
-	}
+  }
 </script>
 <style lang="scss" scoped>
-	.custom-select {
-		flex-basis: 300px;
-	}
+  .custom-select {
+    flex-basis: 300px;
+  }
 </style>

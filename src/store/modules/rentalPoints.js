@@ -3,16 +3,24 @@ import axios from 'axios';
 export default {
   state: {
     rentalPoints: [],
+    activeRentalPoint: false
   },
   getters: {
     rentalPoints(state) {
       return state.rentalPoints;
+    },
+    activeRentalPoint(state) {
+      return state.activeRentalPoint;
     }
   },
   mutations: {
     rentalPoints(state, rentalPoints) {
       console.log('commit: rentalPoints', rentalPoints);
       state.rentalPoints = rentalPoints;
+    },
+    activeRentalPoint(state, activeRentalPoint) {
+      console.log('commit: activeRentalPoint', activeRentalPoint);
+      state.activeRentalPoint = activeRentalPoint;
     }
   },
   actions: {
@@ -37,6 +45,9 @@ export default {
         .then(resp => {
           console.log(resp);
           commit('rentalPoints', resp.data.rental_points);
+
+          // Установка активной точки проката
+          commit('activeRentalPoint', points[1]);
           resolve(resp);                        
         })
         .catch(err => {

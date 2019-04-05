@@ -1,17 +1,25 @@
 import axios from 'axios';
 export default {  
     state: {
-        categories: []
+        categories: [],
+        activeCategory: null
     },
     getters: {
         categories(state) {
             return state.categories;
+        },
+        activeCategory(state) {
+            return state.activeCategory;
         },
     },
     mutations: {
         categories(state, categories) {
             console.log('commit: categories', categories);
             state.categories = categories;
+        },
+        activeCategory(state, activeCategory) {
+            console.log('commit: activeCategory', activeCategory);
+            state.activeCategory = activeCategory;
         }
     },
     actions: {
