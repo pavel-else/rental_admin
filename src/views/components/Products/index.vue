@@ -43,7 +43,7 @@
     beforeCreate() {
       this.$store.dispatch('multiRequest', [
         { cmd: 'getRentalPoints' },
-        { cmd: 'getAllProducts' },
+        { cmd: 'getProducts' },
       ])
       .then(() => {
         if (this.rentalPoints && this.rentalPoints.length > 0) {
