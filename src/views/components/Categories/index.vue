@@ -14,6 +14,9 @@
   import { DraggableTree } from 'vue-draggable-nested-tree';
   export default {
     components: { DraggableTree },
+    beforeCreate() {
+      this.$store.dispatch('getCategories');
+    },
     data: function () {
       return {
         items: [
