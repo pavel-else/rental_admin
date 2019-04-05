@@ -12,6 +12,7 @@
 </template>
 <script>
   import { DraggableTree } from 'vue-draggable-nested-tree';
+  import copy from '@/functions/copy';
   export default {
     components: { DraggableTree },
     beforeCreate() {
@@ -19,7 +20,7 @@
     },
     data: function () {
       return {
-        items: [
+        _items: [
           {text: 'node 1'},
           {text: 'node 2'},
           {text: 'node 3 undraggable', draggable: false},
@@ -51,23 +52,47 @@
         ]
       }
     },
-    methods: {
-      onChange: function (moved, targetId, isAbove) {
-        console.log('asdf',moved, targetId, isAbove)
-        targetId = parseInt(targetId);
-        if (isAbove) {
-          moved = moved.reverse()
-        }
-        moved.forEach(itemId => {
-          itemId = parseInt(itemId);
-          let foundItem = this.items.find(item => item.id === itemId)
-          if (foundItem) {
-              let index = this.items.indexOf(foundItem);
-              this.items.splice(index, 1)
-              let targetIdIndex = this.items.findIndex(item => item.id === targetId);
-              this.items.splice(targetIdIndex + (isAbove ? 0 : 1), 0, foundItem)
-            }
-        })
+    computed: {
+      items() {
+        const makeTree = (categories) => {
+          if (!categories || !categories.map) {
+            return [];
+          }
+
+          // Вспомогательная функция, возращает список потомков
+          const getChildren = (category) => categories.filter(i => i.parent_id === category.id_rent);
+
+          // Рекурсивное добавление дочерних категорий к родительским
+          const addChildren = (list) => {
+            list.map(i => {
+              const children = getChildren(i);
+              i.children = addChildren(children);
+
+              return i;
+            });
+
+            return list;
+          };
+
+          // Подгоняеm поле Text для отображения
+          const modify = categories.map(i => {
+            i.text = i.name;
+
+            return i;
+          });
+
+          // Отбираем родительские категории
+          const parentCategories = modify.filter(i => !i.parent_id);
+
+          // Наращиваем на них детей
+          const tree = addChildren(parentCategories);
+          
+          return tree;
+        };
+
+        const categories = this.$store.getters.categories;
+
+        return makeTree(copy(categories));
       }
     }
   }
