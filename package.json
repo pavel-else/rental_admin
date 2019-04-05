@@ -32,7 +32,7 @@
     "simple-line-icons": "^2.4.1",
     "vue": "^2.5.21",
     "vue-chartjs": "^3.4.0",
-    "vue-multi-sortable": "^1.0.2",
+    "vue-draggable-nested-tree": "^2.2.17",
     "vue-perfect-scrollbar": "^0.1.0",
     "vue-router": "^3.0.2",
     "vuex": "^3.0.1"

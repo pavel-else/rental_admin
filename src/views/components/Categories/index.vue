@@ -1,23 +1,50 @@
 <template>
   <div id="myApp">
-    <span> Look at my sortable list below </span>
-    <sortable :items="items" @change="onChange">
-      <template slot-scope="{item}">
-          {{ item.label }}
-      </template>
-    </sortable>
+    <DraggableTree :data="items" draggable crossTree>
+      <div slot-scope="{data, store, vm}">
+        <template v-if="!data.isDragPlaceHolder">
+          <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{data.open ? '-' : '+'}}&nbsp;</b>
+          <span>{{data.text}}</span>
+        </template>
+      </div>
+    </DraggableTree>
   </div>
 </template>
 <script>
-  import sortable from "vue-multi-sortable";
+  import { DraggableTree } from 'vue-draggable-nested-tree';
   export default {
-    components: { sortable },
+    components: { DraggableTree },
     data: function () {
       return {
         items: [
-          { id: 1, label: "Real Madrid" },
-          { id: 2, label: "NeReal Madrid" },
-          { id: 2, label: "NeReal NeMadrid" },
+          {text: 'node 1'},
+          {text: 'node 2'},
+          {text: 'node 3 undraggable', draggable: false},
+          {text: 'node 4'},
+          {text: 'node 4 undroppable', droppable: false},
+          {text: 'node 5', children: [
+            {text: 'node 1'},
+            {text: 'node 2', children: [
+              {text: 'node 3'},
+              {text: 'node 4'},
+            ]},
+            {text: 'node 2 undroppable', droppable: false, children: [
+              {text: 'node 3'},
+              {text: 'node 4'},
+            ]},
+            {text: 'node 2', children: [
+              {text: 'node 3'},
+              {text: 'node 4 undroppable', droppable: false},
+            ]},
+            {text: 'node 3'},
+            {text: 'node 4'},
+            {text: 'node 3'},
+            {text: 'node 4'},
+            {text: 'node 3'},
+            {text: 'node 4'},
+            {text: 'node 3'},
+            {text: 'node 4'},
+          ]},
         ]
       }
     },
