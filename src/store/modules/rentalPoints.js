@@ -47,7 +47,12 @@ export default {
           commit('rentalPoints', resp.data.rental_points);
 
           // Установка активной точки проката
-          commit('activeRentalPoint', points[1]);
+          const points = resp.data.rental_points;
+
+          if (points && points.map) {
+            commit('activeRentalPoint', resp.data.rental_points[0].id_rent);
+          }
+          
           resolve(resp);                        
         })
         .catch(err => {

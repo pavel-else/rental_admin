@@ -7,7 +7,7 @@
       <b-col sm="8">
         <b-card>
           <div slot="header">
-            <strong>Велосипеды</strong>
+            <strong>{{ activeCategoryName }}</strong>
           </div>
 
             <b-list-group>
@@ -42,7 +42,6 @@
     },
     beforeCreate() {
       this.$store.dispatch('multiRequest', [
-        { cmd: 'getRentalPoints' },
         { cmd: 'getProducts' },
       ])
       .then(() => {
@@ -53,7 +52,6 @@
     },
     data() {
       return {
-        selectedPoint: {},
         selectedProduct: {},
         showDetails: false
       }
@@ -71,6 +69,18 @@
       rentalPoints() {
         return this.$store.getters.rentalPoints;
       },
+      activeCategory() {
+        return this.$store.getters.activeCategory;
+      },
+      activeCategoryName() {
+        if (!this.activeCategory) {
+          return 'No category';
+        }
+
+        const category = this.$store.getters.categories.find(i => i.id_rent === this.activeCategory);
+
+        return category ? category.name : '';
+      },
       products() {
         const products = this.$store.getters.products;
 
@@ -78,13 +88,15 @@
           return [];
         }
 
-        const rentalPointId = this.selectedPoint ? this.selectedPoint.id_rent : false;
+        const rentalPointId = this.$store.getters.activeRentalPoint;
 
         if (!rentalPointId) {
           return [];
         }
 
-        return products.filter(i => i.id_rental_org === rentalPointId);
+        const productsOfPoint = products.filter(i => i.id_rental_org === rentalPointId);
+
+        return productsOfPoint.filter(i => i.category === this.activeCategory);
       }
     }
 
