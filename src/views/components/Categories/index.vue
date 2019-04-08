@@ -3,15 +3,38 @@
       <div slot="header">
         <strong>Категории</strong>
       </div>
-        
-      <DraggableTree :data="items" draggable crossTree @change='changeTree($event)'>
-        <div slot-scope="{data, store, vm}"  @click="selectCategory(data)">
-          <template v-if="!data.isDragPlaceHolder">
-            <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{data.open ? '-' : '+'}}&nbsp;</b>
-            <span>{{data.text}}</span>
-          </template>
-        </div>
-      </DraggableTree>
+      <b-row>
+        <b-col>  
+          <DraggableTree v-if="items && items.length" :data="items" draggable crossTree @change='changeTree($event)'>
+            <div slot-scope="{data, store, vm}"  @click="selectCategory(data)">
+              <template v-if="!data.isDragPlaceHolder">
+                <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{data.open ? '-' : '+'}}&nbsp;</b>
+                <span>{{data.text}}</span>
+              </template>
+            </div>
+          </DraggableTree>
+          <span v-else>Нет категорий</span>
+        </b-col>
+      </b-row>
+
+      <b-row class="newCategory" v-if="showNewCategory">
+        <b-col>
+          <input class="form-control" placeholder="Новая категория" v-model="newCategoryName" ref="newCategory">
+        </b-col>
+      </b-row>
+
+      
+      <b-row class="btn-group">
+        <b-col v-if="showNewCategory">
+          <b-button class="btn" variant="outline-success" @click="save()">Сохранить</b-button>
+        </b-col>
+        <b-col v-if="showNewCategory">
+          <b-button class="btn" variant="outline-danger" @click="showNewCategory = !showNewCategory">Отмена</b-button>
+        </b-col>
+        <b-col v-if="!showNewCategory">
+          <b-button class="btn" variant="outline-success" @click="newCategory()">Добавить категорию</b-button>
+        </b-col>
+      </b-row>
     </b-card>
   </div>
 </template>
@@ -23,6 +46,12 @@
     beforeCreate() {
       this.$store.dispatch('getCategories');
     },
+    data() {
+      return {
+        showNewCategory: false,
+        newCategoryName: '',
+      }
+    },
     methods: {
       changeTree(node, targetTree) {
         //this.data = targetTree.getPureData()
@@ -33,7 +62,14 @@
         }
 
         this.$store.commit('activeCategory', category.id_rent);
-      }
+      },
+      newCategory() {
+        this.showNewCategory = !this.showNewCategory;
+        this.$nextTick(() => this.$refs.newCategory.focus())
+      },
+      save() {
+        this.$store.dispatch('newCategory', this.newCategoryName);
+      },
     },
     computed: {
       items() {
@@ -73,9 +109,10 @@
           return tree;
         };
 
-        const categories = this.$store.getters.categories;
+        const allCategories = this.$store.getters.categories;
+        const categoriesOfPoint = allCategories.filter(i => i.id_rental_org === this.$store.getters.activeRentalPoint);
 
-        return makeTree(copy(categories));
+        return makeTree(copy(categoriesOfPoint));
       }
     }
   }
@@ -107,5 +144,25 @@
     padding: 0;
     display: flex;
     align-items: center;
+  }
+
+  .newCategory {
+    margin-top: 20px;
+    display: flex;
+    input {
+      width: 100%;
+    }
+  }
+
+  .btn-group {
+    margin-top: 20px;
+    display: flex;
+    .col {
+      display: flex;
+      justify-content: center;
+    }
+    .btn {
+      width: 100%;
+    }
   }
 </style>
