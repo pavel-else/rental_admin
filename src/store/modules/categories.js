@@ -52,12 +52,12 @@ export default {
         })
       });            
     },
-    newCategory({ getters, commit }, newCategoryName) {
+    newCategory({ getters, commit }, category) {
       console.log('dispatch: newCategory');
 
       return new Promise((resolve, reject) => {
         const queue = [
-          { cmd: 'newCategory', value: newCategoryName },
+          { cmd: 'newCategory', value: category },
           { cmd: 'getCategories' },
         ];
 

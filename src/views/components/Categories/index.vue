@@ -68,7 +68,13 @@
         this.$nextTick(() => this.$refs.newCategory.focus())
       },
       save() {
-        this.$store.dispatch('newCategory', this.newCategoryName);
+        const category = {
+          name: this.newCategoryName,
+          appId: this.$store.getters.activeRentalPoint
+        };
+
+        this.$store.dispatch('newCategory', category);
+        this.showNewCategory = !this.showNewCategory;
       },
     },
     computed: {
