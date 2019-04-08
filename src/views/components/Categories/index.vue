@@ -1,15 +1,21 @@
 <template>
-    <b-card>
+    <b-card class="tree">
       <div slot="header">
         <strong>Категории</strong>
       </div>
       <b-row>
         <b-col>  
           <DraggableTree v-if="items && items.length" :data="items" draggable crossTree @change='changeTree($event)'>
-            <div slot-scope="{data, store, vm}"  @click="selectCategory(data)">
+            <div slot-scope="{ data, store, vm }">
               <template v-if="!data.isDragPlaceHolder">
-                <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{data.open ? '-' : '+'}}&nbsp;</b>
-                <span>{{data.text}}</span>
+                <div class="wrap">
+                  <div class="text" @click="selectCategory(data)">
+                    <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{ data.open ? '-' : '+' }}&nbsp;</b>
+                    <span>{{ data.text }}</span>
+                  </div>
+                  <b-button class="btn rm" variant="outline-danger" @click="deleteCategory(data)">x</b-button>                  
+                </div>
+
               </template>
             </div>
           </DraggableTree>
@@ -76,6 +82,18 @@
         this.$store.dispatch('newCategory', category);
         this.showNewCategory = !this.showNewCategory;
       },
+      deleteCategory(category) {
+        // Категорию нельзя удалять, если к ней привязаны товары
+        const products = this.$store.getters.products;
+        const filter = products.filter(i => i.category === category.id_rent);
+
+        if (filter && filter.length) {
+          alert('К категории привязаны товары, удаление не возможно');
+          return false;
+        }
+
+        this.$store.dispatch('deleteCategory', { idRent: category.id_rent, appId: this.$store.getters.activeRentalPoint });
+      }
     },
     computed: {
       items() {
@@ -124,6 +142,32 @@
   }
 </script>
 <style lang="scss">
+  .tree {
+    .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .text {
+        width: 100%;
+      }
+
+      &:hover .rm {
+        margin: 0;
+        padding: 0;
+        padding-bottom: 4px;
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        line-height: 10px;
+        font-size: 10px;
+      }
+      .rm {
+        display: none;
+      }
+    }
+  }
+
   #app {
     padding: 50px;
   }

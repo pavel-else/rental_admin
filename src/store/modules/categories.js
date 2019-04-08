@@ -82,7 +82,38 @@ export default {
           reject(err);
         })
       }); 
-    }
+    },
+    deleteCategory({ getters, commit }, category) {
+      console.log('dispatch: deleteCategory');
+
+      return new Promise((resolve, reject) => {
+        const queue = [
+          { cmd: 'deleteCategory', value: category },
+          { cmd: 'getCategories' },
+        ];
+
+        const url = getters.url;
+        const token = localStorage.getItem('user-token');
+
+        axios({ 
+          url,
+          data: {
+            queue,
+            token
+          },
+          method: 'POST',
+        })
+        .then(r => {
+          console.log(r);
+          commit('categories', r.data.categories);
+          resolve(true);                        
+        }).
+        catch(err => {
+          console.log(err)
+          reject(err);
+        })
+      }); 
+    },
     // setProduct({ commit, getters }, product) {
     //     console.log('dispatch: setProduct', product);
 
