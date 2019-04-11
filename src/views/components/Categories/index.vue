@@ -5,7 +5,7 @@
       </div>
       <b-row>
         <b-col>  
-          <DraggableTree v-if="items && items.length" :data="items" draggable crossTree @change='changeTree($event)'>
+          <DraggableTree v-if="items && items.length" :data="items" draggable crossTree @change="changeTree">
             <div slot-scope="{ data, store, vm }">
               <template v-if="!data.isDragPlaceHolder">
                 <div class="wrap">
@@ -60,7 +60,13 @@
     },
     methods: {
       changeTree(node, targetTree) {
-        //this.data = targetTree.getPureData()
+         console.log('tree', targetTree.getPureData());
+
+        if (!targetTree) {
+          return false;
+        }
+
+        this.$store.dispatch('changeCategoriesTree', targetTree.getPureData());
       },
       selectCategory(category) {
         if (!category || !category.id_rent) {
@@ -105,11 +111,17 @@
           // Вспомогательная функция, возращает список потомков
           const getChildren = (category) => categories.filter(i => i.parent_id === category.id_rent);
 
+          const sortByPosition = (categories) => {
+            return categories.sort((a, b) => a.position - b.position);
+          };
+
+
           // Рекурсивное добавление дочерних категорий к родительским
           const addChildren = (list) => {
             list.map(i => {
               const children = getChildren(i);
-              i.children = addChildren(children);
+              const sortChildren = sortByPosition(children);
+              i.children = addChildren(sortChildren);
 
               return i;
             });
@@ -127,8 +139,10 @@
           // Отбираем родительские категории
           const parentCategories = modify.filter(i => !i.parent_id);
 
+          const sortParent = sortByPosition(parentCategories);
+
           // Наращиваем на них детей
-          const tree = addChildren(parentCategories);
+          const tree = addChildren(sortParent);
 
           return tree;
         };
