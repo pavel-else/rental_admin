@@ -71,7 +71,7 @@
       createAccount() {
         const { name, email, password, c_password } = this;
         this.$store.dispatch('AUTH_REGISTER', { name, email, password, c_password }). then(() => {
-          this.$router.push('/');
+          //this.$router.push('/');
         });
       }
     }

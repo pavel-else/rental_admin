@@ -45,7 +45,7 @@ export default {
                     console.log(resp)
                     const token = resp.data.token;
 
-                    //axios.defaults.headers.common['Authorization'] = token;
+                    axios.defaults.headers.common['Authorization'] = token;
                     commit('token', token);
                     localStorage.setItem('user-token', token);
                     resolve(resp);
@@ -59,12 +59,15 @@ export default {
         },
         AUTH_REGISTER({ getters, commit, dispatch}, user) {
             return new Promise((resolve, reject) => {
+                console.log('test', axios.defaults);
                 axios({
-                    url: getters.url + '/api/register',
+                    // url: getters.url,
+                    url: 'https://rentix.biz/api/OAuth.php',
                     data: user,
                     method: 'POST'
                 })
                 .then(resp => {
+                    console.log(resp)
                     const token = resp.data.success.token;
                     axios.defaults.headers.common['Authorization'] = token;
                     commit('AUTH_SUCCESS', token);
