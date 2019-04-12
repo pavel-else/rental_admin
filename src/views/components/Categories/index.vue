@@ -1,5 +1,6 @@
 <template>
-    <b-card class="tree">
+  <div>
+    <b-card v-if="show === 'tree'" class="tree">
       <div slot="header">
         <strong>Категории</strong>
       </div>
@@ -9,7 +10,7 @@
             <div slot-scope="{ data, store, vm }">
               <template v-if="!data.isDragPlaceHolder">
                 <div class="wrap">
-                  <div class="text" @click="selectCategory(data)">
+                  <div class="text" @click="selectCategory(data)" @dblclick="changeCategory(data)">
                     <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{ data.open ? '-' : '+' }}&nbsp;</b>
                     <span>{{ data.text }}</span>
                   </div>
@@ -42,13 +43,20 @@
         </b-col>
       </b-row>
     </b-card>
+
+    <Details v-if="show === 'details'" :_category="categoryToDetails" @close="show = 'tree'" />
   </div>
 </template>
 <script>
   import { DraggableTree } from 'vue-draggable-nested-tree';
   import copy from '@/functions/copy';
+  import Details from './details';
+
   export default {
-    components: { DraggableTree },
+    components: {
+      DraggableTree,
+      Details
+    },
     beforeCreate() {
       this.$store.dispatch('getCategories');
     },
@@ -56,6 +64,8 @@
       return {
         showNewCategory: false,
         newCategoryName: '',
+        show: 'tree', // tree || details
+        categoryToDetails: null,
       }
     },
     methods: {
@@ -99,6 +109,13 @@
         }
 
         this.$store.dispatch('deleteCategory', { idRent: category.id_rent, appId: this.$store.getters.activeRentalPoint });
+      },
+      changeCategory(category) {
+        this.show = 'details';
+        this.categoryToDetails = {
+          name:    category.name,
+          id_rent: category.id_rent,
+        };
       }
     },
     computed: {
