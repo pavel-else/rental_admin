@@ -1,5 +1,6 @@
 <template>
   <b-card class="tree">
+    {{ category }}
     <div slot="header">
       <strong>Редактировать категорию</strong>
     </div>
@@ -16,7 +17,7 @@
         </tr>
         <tr>
           <th scope="row">Иконка</th>
-          <td><input class="form-control"></td>
+          <td><Icons :iconId="category.iconId" @selectIcon="selectIcon($event)"/></td>
         </tr>
         <!-- <tr>
           <th scope="row">Статус</th>
@@ -37,7 +38,11 @@
 </template>
 <script>
   import copy from '@/functions/copy';
+  import Icons from './iconsToggle';
   export default {
+    components: {
+      Icons
+    },
     props: {
       _category: Object,
     },
@@ -50,6 +55,9 @@
       save() {
         this.$store.dispatch('updateCategory', this.category);
         this.$emit('close');
+      },
+      selectIcon(iconId) {
+        this.category.iconId = iconId;
       }
     }
   }

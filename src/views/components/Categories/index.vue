@@ -118,6 +118,7 @@
         this.categoryToDetails = {
           name:    category.name,
           id_rent: category.id_rent,
+          iconId:  category.icon_id
         };
       }
     },

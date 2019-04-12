@@ -9,6 +9,7 @@ import settings      from './modules/settings';
 import rentalPoints  from './modules/rentalPoints';
 import products      from './modules/products';
 import categories    from './modules/categories';
+import icons         from './modules/icons';
 
 Vue.use(Vuex);
 
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
     settings,
     rentalPoints,
     products,
-    categories
+    categories,
+    icons,
   }
 });
 
