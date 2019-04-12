@@ -14,7 +14,10 @@
                     <b v-if="data.children && data.children.length" @click="store.toggleOpen(data)">{{ data.open ? '-' : '+' }}&nbsp;</b>
                     <span>{{ data.text }}</span>
                   </div>
-                  <b-button class="btn rm" variant="outline-danger" @click="deleteCategory(data)">x</b-button>                  
+                  <div class="show-btns">
+                    <i class="icon-note icons font-ml ml-1" @click="changeCategory(data)" title="Редактировать"></i>
+                    <i class="icon-close icons font-ml ml-1" @click="deleteCategory(data)" title="Удалить"></i>                
+                  </div>
                 </div>
 
               </template>
@@ -183,18 +186,15 @@
         width: 100%;
       }
 
-      &:hover .rm {
-        margin: 0;
-        padding: 0;
-        padding-bottom: 4px;
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        line-height: 10px;
-        font-size: 10px;
+      &:hover .icons {
+        display: block;
       }
-      .rm {
+      .icons {
         display: none;
+      }
+      .show-btns {
+        display: flex;
+        align-items: center;
       }
     }
   }
