@@ -1,6 +1,5 @@
 <template>
   <b-card class="tree">
-    {{ category }}
     <div slot="header">
       <strong>Редактировать категорию</strong>
     </div>
@@ -16,8 +15,8 @@
           <td><input class="form-control" v-model="category.name"></td>
         </tr>
         <tr>
-          <th scope="row">Иконка</th>
-          <td><Icons :iconId="category.iconId" @selectIcon="selectIcon($event)"/></td>
+          <th scope="row">Набор иконок</th>
+          <td><Icons :category="category" @selectIcon="selectIcon($event)"/></td>
         </tr>
         <!-- <tr>
           <th scope="row">Статус</th>
@@ -38,7 +37,7 @@
 </template>
 <script>
   import copy from '@/functions/copy';
-  import Icons from './iconsToggle';
+  import Icons from './icons';
   export default {
     components: {
       Icons
