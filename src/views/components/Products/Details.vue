@@ -13,7 +13,10 @@
         </tr>
         <tr>
           <th scope="row">Категория</th>
-          <td></td>
+          <td>
+            <span v-if="!showCategoriesList" class="pointer" @click="showCategoriesList = true">{{ category.name }}</span>
+            <CategoriesToSelect v-else :categories="parentCategories" @setCategory="setCategory($event)" />
+          </td>
         </tr>
         <tr>
           <th scope="row">Иконка</th>
@@ -52,15 +55,17 @@
 </template>
 
 <script>
-import copy    from '@/functions/copy';
-import Icons   from './icons';
-import Palette from './palette';
+import copy from '@/functions/copy';
+import Icons from './Icons';
+import Palette from './Palette';
+import CategoriesToSelect from './CategoriesToSelect';
 
 export default {
   name: 'Details',
   components: {
     Icons,
     Palette,
+    CategoriesToSelect
   },
   props: {
     _product: {
@@ -71,6 +76,7 @@ export default {
   data() {
     return {
       product: copy(this._product),
+      showCategoriesList: false,
     }
   },
   methods: {
@@ -78,7 +84,7 @@ export default {
       this.$emit('close');
     },
     save() {
-      this.$store.dispatch('setProduct', this.product);
+      this.$store.dispatch('updateProduct', this.product);
       this.close();
     },
     setIcon(iconId) {
@@ -86,6 +92,23 @@ export default {
     },
     setColor(color) {
       this.product.color = color;
+    },
+    setCategory(categoryId) {
+      this.product.category = categoryId;
+      this.showCategoriesList = false;
+    }
+  },
+  computed: {
+    category() {
+      if (!this.product || !this.product.category) {
+        return false;
+      }
+
+      const category = this.$store.getters.categories.find(i => i.id_rent === this.product.category);
+      return category;
+    },
+    parentCategories() {
+      return this.$store.getters.categories.filter(i => i.id_rental_org === this.$store.getters.activeRentalPoint && i.parent_id === null);
     }
   }
 }

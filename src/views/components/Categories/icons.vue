@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="list">
-      <i class="icon" v-for="item in list" @click="click(item.id)">
+      <i class="icon" v-for="item in icons" @click="click(item.id)">
         <svg :viewBox="item.viewBox" :fill="color">
           <path :d="item.d"/>
         </svg>
@@ -35,13 +35,10 @@
       },
     },
     computed: {
-      list() {
-        const list = this.ids.map(i => {
-          const icon = this.$store.getters.icons.find(icon => icon.id == i);
-          return icon;
-        });
+      icons() {
+        const icons = this.ids.map(id => this.$store.getters.icons.find(icon => icon.id_rent == id));
 
-        return list;
+        return icons;
       }
     }
   }
