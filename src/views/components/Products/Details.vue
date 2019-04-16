@@ -8,12 +8,26 @@
     <table class="table">
       <tbody>
         <tr>
-          <th scope="row">Категория</th>
-          <td>{{ product.category }}</td>
-        </tr>
-        <tr>
           <th scope="row">Название</th>
           <td><input class="form-control" v-model="product.name"></td>
+        </tr>
+        <tr>
+          <th scope="row">Категория</th>
+          <td></td>
+        </tr>
+        <tr>
+          <th scope="row">Иконка</th>
+          <td>
+            <Icons 
+              :iconId="product.icon_id"
+              :categoryId="product.category"
+              :color="product.color"
+            />
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Цвет</th>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">Стоимость</th>
@@ -35,9 +49,14 @@
 </template>
 
 <script>
-import copy from '@/functions/copy';
+import copy  from '@/functions/copy';
+import Icons from './icons';
+
 export default {
   name: 'Details',
+  components: {
+    Icons,
+  },
   props: {
     _product: {
       type: Object,
