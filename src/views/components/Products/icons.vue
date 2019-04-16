@@ -1,7 +1,7 @@
 <template>
   <ul class="list">
     <li v-for="icon in icons">
-      <i class="icon" :style="activeStyle(icon)">
+      <i class="icon" :style="activeStyle(icon)" @click="setIcon(icon)">
         <svg :viewBox="icon.viewBox" :fill="color">
           <path :d="icon.d"/>
         </svg>
@@ -20,6 +20,9 @@
       color: String,
     },
     methods: {
+      setIcon(icon) {
+        this.$emit('setIcon', icon.id_rent);
+      },
       activeStyle(icon) {
         if (icon.id_rent == this.iconId) {
           return { "border-bottom": "3px solid " +  this.color };

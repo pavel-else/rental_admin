@@ -22,6 +22,7 @@
               :iconId="product.icon_id"
               :categoryId="product.category"
               :color="product.color"
+              @setIcon="setIcon($event)"
             />
           </td>
         </tr>
@@ -79,6 +80,9 @@ export default {
     save() {
       this.$store.dispatch('setProduct', this.product);
       this.close();
+    },
+    setIcon(iconId) {
+      this.product.icon_id = iconId;
     },
     setColor(color) {
       this.product.color = color;
