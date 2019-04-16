@@ -27,7 +27,9 @@
         </tr>
         <tr>
           <th scope="row">Цвет</th>
-          <td></td>
+          <td>
+            <Palette @setColor="setColor($event)"/>
+          </td>
         </tr>
         <tr>
           <th scope="row">Стоимость</th>
@@ -49,13 +51,15 @@
 </template>
 
 <script>
-import copy  from '@/functions/copy';
-import Icons from './icons';
+import copy    from '@/functions/copy';
+import Icons   from './icons';
+import Palette from './palette';
 
 export default {
   name: 'Details',
   components: {
     Icons,
+    Palette,
   },
   props: {
     _product: {
@@ -75,6 +79,9 @@ export default {
     save() {
       this.$store.dispatch('setProduct', this.product);
       this.close();
+    },
+    setColor(color) {
+      this.product.color = color;
     }
   }
 }
