@@ -49,7 +49,7 @@
         </tr>
         <tr>
           <th scope="row">Принадлежность к полу</th>
-          <td class="pruduct__sex">
+          <td class="pruduct__td pruduct__td--sex">
             <label>
               <input 
                 name="product-sex" 
@@ -84,7 +84,16 @@
         </tr>
         <tr>
           <th scope="row">Статус</th>
-          <td>{{ product.status }}</td>
+          <td class="pruduct__td pruduct__td--status">
+            <label>
+              <input type="radio" name="product-status" value="active" v-model="product.status">
+              Используется
+            </label>
+            <label>
+              <input type="radio" name="product-status" value="off" v-model="product.status">
+              Не используется
+            </label>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -164,8 +173,14 @@ export default {
       margin: 0 10px;
     }
   }
-  .pruduct__sex {
-    display: flex;
-    justify-content: space-around;
+  .pruduct__td {
+    &--sex {
+      display: flex;
+      justify-content: space-around;      
+    }
+    &--status {
+      display: flex;
+      justify-content: space-around;
+    }
   }
 </style>

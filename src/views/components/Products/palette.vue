@@ -43,24 +43,24 @@
 <style scoped>
   .palette {
     display: flex;
-    height: 25px;
-    width: 230px;
+    /*height: 25px;*/
+    /*width: 230px;*/
   }
   .colors {
     display: flex;
+    flex-wrap: wrap;
     margin: 0;
     padding: 0;
-    height: 16px;
+
     /*width: 220px;*/
   }
   .color {
     display: block;
     box-sizing: border-box;
-    margin: 0 2px;
+    margin: 10px 2px;
     padding: 0;
     width: 24px;
     height: 24px;
-    line-height: 24px;
     border: 2px solid gray;
     border-radius: 3px;
   }
