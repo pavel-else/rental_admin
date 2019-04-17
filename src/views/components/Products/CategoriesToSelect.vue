@@ -1,13 +1,19 @@
 <template>
   <ul class="list">
-    <li class="item" v-for="category in categories" @click.stop="setCategory(category.id_rent)">
+    <li 
+      class="item" 
+      v-for="category in categories" 
+      :key="category.id_rent" 
+      @click.stop="setCategory(category.id_rent)"
+    >
       {{ category.name }}
       <CategoriesToSelect v-if="categories && categories.length > 0" :categories="getChildren(category)" @setCategory="setCategory($event)"/>
     </li>
   </ul>
 </template>
+
 <script>
-  import CategoriesToSelect from './CategoriesToSelect';
+  import CategoriesToSelect from './categoriesToSelect';
   export default {
     name: 'CategoriesToSelect',
     props: {

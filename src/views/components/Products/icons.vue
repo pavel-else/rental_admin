@@ -1,6 +1,6 @@
 <template>
   <ul class="list">
-    <li v-for="icon in icons">
+    <li v-for="icon in icons" :key="icon.id_rent">
       <i class="icon" :style="activeStyle(icon)" @click="setIcon(icon)">
         <svg :viewBox="icon.viewBox" :fill="color">
           <path :d="icon.d"/>

@@ -14,6 +14,7 @@
               <b-list-group-item
                 class="pointer"
                 v-for="item in products"
+                :key="item.id_rent"
                 @click="selectProduct(item)"
               >
                 {{ item.name }}
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-  import Details from './Details';
+  import Details from './details';
   import Categories from '@/views/components/Categories';
   export default {
     components: {

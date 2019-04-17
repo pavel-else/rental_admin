@@ -56,9 +56,9 @@
 
 <script>
 import copy from '@/functions/copy';
-import Icons from './Icons';
-import Palette from './Palette';
-import CategoriesToSelect from './CategoriesToSelect';
+import Icons from './icons';
+import Palette from './palette';
+import CategoriesToSelect from './categoriesToSelect';
 
 export default {
   name: 'Details',
