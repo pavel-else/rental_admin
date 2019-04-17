@@ -21,6 +21,11 @@
         <tr>
           <th scope="row">Фото</th>
             <td>
+              <!--
+                Чтобы механизм загрузки работал корректно, файлы должны загружаться через input[type=file]
+                Чтобы не стилизовать его, решено обернуть все в общий label, скрыть input, а вместо него посавить div,
+                замаскированный под кнопку (button не работает на label)
+               -->
               <label class="product__photo--label" for="photo__input">
                 <template>
                   <Photo 
