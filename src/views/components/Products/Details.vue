@@ -40,6 +40,49 @@
           <td><input class="form-control" v-model="product.cost"></td>
         </tr>
         <tr>
+          <th scope="row">Описание</th>
+          <td><textarea class="form-control" v-model="product.note"></textarea></td>
+        </tr>
+        <tr>
+          <th scope="row">Размер</th>
+          <td><input class="form-control" v-model="product.size"></td>
+        </tr>
+        <tr>
+          <th scope="row">Принадлежность к полу</th>
+          <td class="pruduct__sex">
+            <label>
+              <input 
+                name="product-sex" 
+                id="product-sex-male" 
+                class="form-check-input" 
+                type="radio"
+                value="male"
+                v-model="product.sex"
+              >Мужской
+            </label>
+            <label>
+              <input 
+                name="product-sex" 
+                id="product-sex-female" 
+                class="form-check-input" 
+                type="radio"
+                value="female"
+                v-model="product.sex"
+              >Женский
+            </label>
+            <label>
+              <input
+                name="product-sex" 
+                id="product-sex-unisex" 
+                class="form-check-input" 
+                type="radio"
+                value="unisex"
+                v-model="product.sex"
+              >Универсальный
+            </label>
+          </td>
+        </tr>
+        <tr>
           <th scope="row">Статус</th>
           <td>{{ product.status }}</td>
         </tr>
@@ -120,5 +163,9 @@ export default {
     .btn {
       margin: 0 10px;
     }
+  }
+  .pruduct__sex {
+    display: flex;
+    justify-content: space-around;
   }
 </style>
