@@ -35,7 +35,7 @@
 
 <script>
   import Details from './details';
-  import Categories from '@/views/components/Categories';
+  import Categories from '@/views/components/Categories/Categories';
   export default {
     components: {
       Details,

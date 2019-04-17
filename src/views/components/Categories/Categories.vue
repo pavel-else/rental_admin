@@ -6,8 +6,14 @@
       </div>
       <b-row>
         <b-col>  
-          <DraggableTree v-if="items && items.length" :data="items" draggable crossTree @change="changeTree">
-            <div slot-scope="{ data, store, vm }">
+          <DraggableTree 
+            v-if="items && items.length" 
+            :data="items" 
+            draggable 
+            crossTree 
+            @change="changeTree"
+          >
+            <div slot-scope="{ data, store }"><!-- { data, store, vm } -->
               <template v-if="!data.isDragPlaceHolder">
                 <div class="wrap">
                   <div class="text" @click="selectCategory(data)" @dblclick="changeCategory(data)">
@@ -120,7 +126,7 @@
           id_rent: category.id_rent,
           icons_id:  category.icons_id
         };
-      }
+      },
     },
     computed: {
       items() {
@@ -208,15 +214,15 @@
     border: 1px solid #ccc;
     padding: 20px;
   }
-  .tree-node {
-  }
+  // .tree-node {
+  // }
   .tree-node-inner {
     padding: 5px;
     border: 1px solid #ccc;
     cursor: pointer;
   }
-  .draggable-placeholder {
-  }
+  // .draggable-placeholder {
+  // }
   .draggable-placeholder-inner {
     border: 1px dashed #0088F8;
     box-sizing: border-box;

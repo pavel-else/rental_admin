@@ -61,7 +61,7 @@
     width: 24px;
     height: 24px;
     line-height: 24px;
-    border: 2px solid lightgray;
+    border: 2px solid gray;
     border-radius: 3px;
   }
   .color:hover {
