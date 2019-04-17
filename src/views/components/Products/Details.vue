@@ -19,6 +19,24 @@
           </td>
         </tr>
         <tr>
+          <th scope="row">Фото</th>
+            <td>
+              <label class="product__photo--label" for="photo__input">
+                <template>
+                  <Photo 
+                    class="details__photo" 
+                    v-if="product.img" 
+                    :product="product" 
+                    :refresh="refreshPhoto"
+                  ></Photo>
+                  <div v-else class="btn btn-primary" variant="outline-success">Добавить фото</div>    
+                </template>
+                <input id="photo__input" class="photo__input" type="file" @input="addImage($event)">
+              </label>
+              <span class="details__status">{{ uploadStatus }}</span>                
+            </td>
+        </tr>
+        <tr>
           <th scope="row">Иконка</th>
           <td>
             <Icons 
@@ -108,16 +126,21 @@
 
 <script>
 import copy from '@/functions/copy';
+import uploads from '@/functions/userUploads';
+import getExtention from '@/functions/getExtention';
 import Icons from './icons';
 import Palette from './palette';
 import CategoriesToSelect from './categoriesToSelect';
+import Photo from './photo';
+
 
 export default {
   name: 'Details',
   components: {
     Icons,
     Palette,
-    CategoriesToSelect
+    CategoriesToSelect,
+    Photo,
   },
   props: {
     _product: {
@@ -129,6 +152,8 @@ export default {
     return {
       product: copy(this._product),
       showCategoriesList: false,
+      refreshPhoto: false,
+      uploadStatus: '',
     }
   },
   methods: {
@@ -148,7 +173,27 @@ export default {
     setCategory(categoryId) {
       this.product.category = categoryId;
       this.showCategoriesList = false;
-    }
+    },
+    async addImage(e) {
+      const file = e.target.files[0];
+      const time = Math.floor(Date.now() / 1000);
+      const ext = getExtention(file.type);
+      const name = `${ this.$store.getters.activeRentalPoint }_${ this.product.id_rent }_${ time }${ ext }`;
+
+      const formData = new FormData();
+
+      formData.set('file', file, name);
+      this.uploadStatus = 'Загрузка ...';
+      
+      const result = await uploads(formData);
+
+      if (result) {
+        this.uploadStatus = 'Загрузка завершена';
+        this.product.img = `${ time }${ ext }`;
+      } 
+
+      this.refresh = true;    
+    },
   },
   computed: {
     category() {
@@ -182,5 +227,21 @@ export default {
       display: flex;
       justify-content: space-around;
     }
+  }
+
+  .product__photo--label {
+    display: flex;
+    flex-direction: row;
+  }
+  .details__photo {
+    position: relative;
+    width: 120px;
+    height: 90px;
+  }
+  .details__photo:hover {
+    cursor: pointer;
+  }
+  .photo__input {
+    display: none;
   }
 </style>
