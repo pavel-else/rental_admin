@@ -10,6 +10,7 @@ import rentalPoints  from './modules/rentalPoints';
 import products      from './modules/products';
 import categories    from './modules/categories';
 import icons         from './modules/icons';
+import initStore     from './modules/initStore';
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ const store = new Vuex.Store({
     products,
     categories,
     icons,
+    initStore,
   }
 });
 

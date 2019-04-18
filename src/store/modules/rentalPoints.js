@@ -3,14 +3,14 @@ import axios from 'axios';
 export default {
   state: {
     rentalPoints: [],
-    activeRentalPoint: false
+    activeRentalPointId: false,
   },
   getters: {
     rentalPoints(state) {
       return state.rentalPoints;
     },
-    activeRentalPoint(state) {
-      return state.activeRentalPoint;
+    activeRentalPointId(state) {
+      return state.activeRentalPointId;
     }
   },
   mutations: {
@@ -18,9 +18,9 @@ export default {
       console.log('commit: rentalPoints', rentalPoints);
       state.rentalPoints = rentalPoints;
     },
-    activeRentalPoint(state, activeRentalPoint) {
-      console.log('commit: activeRentalPoint', activeRentalPoint);
-      state.activeRentalPoint = activeRentalPoint;
+    activeRentalPointId(state, rentalPointId) {
+      console.log('commit: activeRentalPointId', rentalPointId);
+      state.activeRentalPointId = rentalPointId;
     }
   },
   actions: {
@@ -44,15 +44,7 @@ export default {
         })
         .then(resp => {
           console.log(resp);
-          commit('rentalPoints', resp.data.rental_points);
-
-          // Установка активной точки проката
-          const points = resp.data.rental_points;
-
-          if (points && points.map) {
-            commit('activeRentalPoint', resp.data.rental_points[0].id_rent);
-          }
-          
+          commit('rentalPoints', resp.data.rental_points);          
           resolve(resp);                        
         })
         .catch(err => {
@@ -61,26 +53,10 @@ export default {
         });
       });
     },
-    // setRentalPointInfo({ commit, getters }, rentalPointInfo) {
-    //   console.log('dispatch: setRentalPointInfo', rentalPointInfo);
-    //   return new Promise((resolve, reject) => {
-    //     axios({
-    //       method: 'post',
-    //       url: getters.url,
-    //       data: {
-    //         queue: [{ cmd: 'setRentalPointInfo', value: rentalPointInfo }],
-    //         token: localStorage.getItem('user-token')
-    //       },                 
-    //     })
-    //     .then(r => {
-    //       console.log(r);
-    //       commit('rentalPointInfo', rentalPointInfo);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //       reject(err);
-    //     });
-    //   });
-    // },
+    setActiveRentalPointId({ state, commit }, index) {
+      if (state.rentalPoints && state.rentalPoints[index]) {
+        commit('activeRentalPointId', state.rentalPoints[index].id_rent);
+      }     
+    },
   }
 }

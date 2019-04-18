@@ -1,56 +1,37 @@
 <template>
-  <div class="animated fadeIn">
-    <b-row v-if="!showDetails">
-      <b-col sm="4">
-        <Categories />
-      </b-col>
-      <b-col sm="8">
-        <b-card>
-          <div slot="header">
-            <strong>{{ activeCategoryName }}</strong>
-          </div>
-
-            <b-list-group>
-              <b-list-group-item
-                class="pointer"
-                v-for="item in products"
-                :key="item.id_rent"
-                @click="selectProduct(item)"
-              >
-                {{ item.name }}
-              </b-list-group-item>
-            </b-list-group>          
-        </b-card>
-      </b-col>
-    </b-row>
-
-    <!-- Детальная информация -->
-    <b-row v-if="showDetails" class="d-flex justify-content-center">
-      <b-col sm="8">
-        <Details :_product="selectedProduct" @close="showDetails = false"></Details>
-      </b-col>
-    </b-row>
-  </div>
+  <b-card>
+    <div slot="header">
+      <strong>{{ activeCategoryName }}</strong>
+    </div>
+      <b-list-group>
+        <b-list-group-item
+          class="pointer"
+          v-for="item in products"
+          :key="item.id_rent"
+          @click="selectProduct(item)"
+        >
+          {{ item.name }}
+        </b-list-group-item>
+      </b-list-group>          
+  </b-card>
 </template>
 
 <script>
-  import Details from './details';
   import Categories from '@/views/components/Categories/Categories';
   export default {
     components: {
-      Details,
       Categories
     },
-    beforeCreate() {
-      this.$store.dispatch('multiRequest', [
-        { cmd: 'getProducts' },
-      ])
-      .then(() => {
-        if (this.rentalPoints && this.rentalPoints.length > 0) {
-          this.selectedPoint = this.rentalPoints[0];
-        }
-      });
-    },
+    // beforeCreate() {
+    //   this.$store.dispatch('multiRequest', [
+    //     { cmd: 'getProducts' },
+    //   ])
+    //   .then(() => {
+    //     if (this.rentalPoints && this.rentalPoints.length > 0) {
+    //       this.selectedPoint = this.rentalPoints[0];
+    //     }
+    //   });
+    // },
     data() {
       return {
         selectedProduct: {},

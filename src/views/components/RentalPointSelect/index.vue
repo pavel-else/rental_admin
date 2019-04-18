@@ -5,12 +5,6 @@
 </template>
 <script>
   export default {
-    beforeCreate() {
-      this.$store.dispatch('getRentalPoints')
-      .then(() => {
-        this.selected = this.$store.getters.activeRentalPoint;
-      })
-    },
     data() {
       return {
         selected: false,
@@ -18,15 +12,26 @@
     },
     methods: {
       setActivePoint() {
-        this.$store.commit('activeRentalPoint', this.selected);
+        const rentalPointId = event.target.value;
+
+        if (!rentalPointId) {
+          return false;
+        }
+
+        this.$store.commit('activeRentalPointId', rentalPointId);
       }
     },
     computed: {
+      activeRentalPointId() {
+        return this.$store.getters.activeRentalPointId;
+      },
       rentalPoints() {
         return this.$store.getters.rentalPoints;
-      },
-      activePoint() {
-        return this.$store.getters.activeRentalPoint;
+      }
+    },
+    watch: {
+      activeRentalPointId() {
+        this.selected = this.activeRentalPointId;
       }
     }
 

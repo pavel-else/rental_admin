@@ -8,6 +8,8 @@ export default {
   beforeCreate() {
     if (!localStorage.getItem('user-token')) {
       this.$router.push('/Pages/Login');
+    } else {
+      this.$store.dispatch('initStore');
     }
   }
 }

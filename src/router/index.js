@@ -33,7 +33,7 @@ const ProgressBars = () => import('@/views/base/ProgressBars')
 const Tooltips = () => import('@/views/base/Tooltips')
 
 const RentalPoints = () => import('@/views/components/RentalPoints');
-const Products = () => import('@/views/components/Products/Products');
+const Products = () => import('@/views/pages/Products');
 
 
 // Views - Buttons

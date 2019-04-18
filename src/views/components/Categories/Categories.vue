@@ -66,9 +66,9 @@
       DraggableTree,
       Details
     },
-    beforeCreate() {
-      this.$store.dispatch('getCategories');
-    },
+    // beforeCreate() {
+    //   this.$store.dispatch('getCategories');
+    // },
     data() {
       return {
         showNewCategory: false,
