@@ -44,6 +44,11 @@ export default {
       icon: 'fa fa-bicycle'
     },
     {
+      name: 'Тарифы',
+      url: '/tariffs',
+      icon: 'fa fa-money'
+    },
+    {
       name: 'Настройки',
       url: '/theme/colors',
       icon: 'fa fa-cog'

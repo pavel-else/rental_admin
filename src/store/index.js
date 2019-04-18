@@ -11,6 +11,7 @@ import products      from './modules/products';
 import categories    from './modules/categories';
 import icons         from './modules/icons';
 import initStore     from './modules/initStore';
+import tariffs       from './modules/tariffs';
 
 Vue.use(Vuex);
 
@@ -24,6 +25,7 @@ const store = new Vuex.Store({
     categories,
     icons,
     initStore,
+    tariffs,
   }
 });
 

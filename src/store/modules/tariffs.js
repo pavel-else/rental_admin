@@ -1,15 +1,26 @@
 import axios from 'axios';
 export default {  
+  state: {
+    tariffs: []
+  },
+  getters: {
+    tariffs(state) {
+      return state.tariffs;
+    },
+  },
+  mutations: {
+    tariffs(state, tariffs) {
+      console.log('commit: tariffs', tariffs);
+      state.tariffs = tariffs;
+    }
+  },
   actions: {
-    initStore({ dispatch, commit, getters }) {
-      console.log('dispatch: initStore');
+    getTariffs({ commit, getters }) {
+      console.log('dispatch: getTariffs');
 
       return new Promise((resolve, reject) => {
         const queue = [
-          { cmd: 'getCategories' },
-          { cmd: 'getProducts' },
-          { cmd: 'getRentalPoints' },
-          { cmd: 'getTariffs' },
+          { cmd: 'getTariffs'},
         ];
         const url = getters.url;
         const token = localStorage.getItem('user-token');
@@ -24,13 +35,7 @@ export default {
         })
         .then(r => {
           console.log(r);
-          commit('categories', r.data.categories);
-          commit('products', r.data.products);
-          commit('rentalPoints', r.data.rental_points);
           commit('tariffs', r.data.tariffs);
-
-          dispatch('setActiveRentalPointId', 0);
-
           resolve(true);                        
         }).
         catch(err => {
@@ -38,6 +43,6 @@ export default {
           reject(err);
         })
       });            
-    },
+    }
   }
 }

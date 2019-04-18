@@ -34,6 +34,7 @@ const Tooltips = () => import('@/views/base/Tooltips')
 
 const RentalPoints = () => import('@/views/components/RentalPoints');
 const Products = () => import('@/views/pages/Products');
+const Tariffs = () => import('@/views/pages/Tariffs');
 
 
 // Views - Buttons
@@ -107,6 +108,11 @@ export default new Router({
           path: 'products',
           name: 'Products',
           component: Products
+        },
+        {
+          path: 'tariffs',
+          name: 'Tariffs',
+          component: Tariffs
         },
         {
           path: 'theme',
