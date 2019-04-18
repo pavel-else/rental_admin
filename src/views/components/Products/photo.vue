@@ -17,7 +17,7 @@
           return false;
         }
 
-        const appID = this.$store.getters.activeRentalPoint;
+        const appID = this.$store.getters.activeRentalPointId;
         const ext = this.product.img;
         const rand = this.refresh ? '?' + Math.floor(Math.random() * 1000000) : '';
         const url = `https://rentix.biz/user_uploads/${ appID }_${ this.product.id_rent }_${ ext }${ rand }`;

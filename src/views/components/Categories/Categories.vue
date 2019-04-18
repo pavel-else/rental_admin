@@ -175,7 +175,7 @@
         };
 
         const allCategories = this.$store.getters.categories;
-        const categoriesOfPoint = allCategories.filter(i => i.id_rental_org === this.$store.getters.activeRentalPoint);
+        const categoriesOfPoint = allCategories.filter(i => i.id_rental_org === this.$store.getters.activeRentalPointId);
 
         return makeTree(copy(categoriesOfPoint));
       }

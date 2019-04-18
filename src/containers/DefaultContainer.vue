@@ -68,7 +68,7 @@ import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFoot
 import DefaultAside from './DefaultAside'
 import DefaultHeaderDropdownAccnt from './DefaultHeaderDropdownAccnt'
 
-import RentalPointSelect from '@/views/components/RentalPointSelect';
+import RentalPointSelect from '@/views/components/RentalPointSelect/RentalPointSelect';
 
 export default {
   name: 'full',

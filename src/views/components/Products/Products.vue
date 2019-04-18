@@ -17,40 +17,14 @@
 </template>
 
 <script>
-  import Categories from '@/views/components/Categories/Categories';
   export default {
-    components: {
-      Categories
-    },
-    // beforeCreate() {
-    //   this.$store.dispatch('multiRequest', [
-    //     { cmd: 'getProducts' },
-    //   ])
-    //   .then(() => {
-    //     if (this.rentalPoints && this.rentalPoints.length > 0) {
-    //       this.selectedPoint = this.rentalPoints[0];
-    //     }
-    //   });
-    // },
-    data() {
-      return {
-        selectedProduct: {},
-        showDetails: false
-      }
-    },
     methods: {
-      selectRental(point) {
-        this.selectedPoint = point;
-      },
       selectProduct(product) {
-        this.selectedProduct = product;
-        this.showDetails = true;
+        this.$emit('select', product);
       }
     },
     computed: {
-      rentalPoints() {
-        return this.$store.getters.rentalPoints;
-      },
+
       activeCategory() {
         return this.$store.getters.activeCategory;
       },
@@ -70,7 +44,7 @@
           return [];
         }
 
-        const rentalPointId = this.$store.getters.activeRentalPoint;
+        const rentalPointId = this.$store.getters.activeRentalPointId;
 
         if (!rentalPointId) {
           return [];
@@ -84,8 +58,3 @@
 
   }
 </script>
-<style lang="scss" scoped>
-  .category {
-    margin-left: 10px;
-  }
-</style>
