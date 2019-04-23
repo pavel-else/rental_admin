@@ -123,7 +123,7 @@
     <b-row>
       <b-col class="btn-group">
         <b-button class="btn" variant="outline-success" @click="save()">Сохранить</b-button>
-        <b-button class="btn" variant="outline-danger">Удалить</b-button>
+        <b-button class="btn" variant="outline-danger" @click="deleteProduct()">Удалить</b-button>
       </b-col>
     </b-row>
   </b-card>  
@@ -167,6 +167,16 @@ export default {
     },
     save() {
       this.$store.dispatch('updateProduct', this.product);
+      this.close();
+    },
+    deleteProduct() {
+      const productName =  this.product.name ? this.product.name : '';
+      const consent = confirm(`Вы действительно хотите удалить ${ productName } ?`);
+
+      if (consent) {
+        this.$store.dispatch('deleteProduct', this.product.id_rent);
+      }
+      
       this.close();
     },
     setIcon(iconId) {

@@ -50,11 +50,13 @@
           return [];
         }
 
-        const productsOfPoint = products.filter(i => i.id_rental_org === rentalPointId);
+        // Filters
+        const activePoint = (product) => product.id_rental_org === rentalPointId;
+        const notDeleted = (product) => product.status !== 'deleted';
+        const activeCategory = (product) => product.category === this.activeCategory;
 
-        return productsOfPoint.filter(i => i.category === this.activeCategory);
+        return products.filter(i => activePoint(i) && notDeleted(i) && activeCategory(i));
       }
     }
-
   }
 </script>
