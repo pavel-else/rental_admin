@@ -47,7 +47,7 @@ export default {
     updateProduct({ commit, getters }, product) {
       console.log('dispatch: updateProduct', product);
 
-      const appId = getters.activeRentalPoint;
+      const appId = getters.activeRentalPointId;
 
       const queue = [
         { cmd: 'updateProduct', value: { product, appId } },

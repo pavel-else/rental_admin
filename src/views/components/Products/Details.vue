@@ -210,7 +210,12 @@ export default {
       return category;
     },
     parentCategories() {
-      return this.$store.getters.categories.filter(i => i.id_rental_org === this.$store.getters.activeRentalPoint && i.parent_id === null);
+      const categories = this.$store.getters.categories;
+
+      const activeRentalPointId = this.$store.getters.activeRentalPointId;
+      const categoriesOfActiveRentalPoint = categories.filter(i => i.id_rental_org === activeRentalPointId);
+
+      return categoriesOfActiveRentalPoint;
     }
   }
 }
