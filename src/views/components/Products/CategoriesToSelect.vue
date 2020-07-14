@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import CategoriesToSelect from './categoriesToSelect';
+  import CategoriesToSelect from './CategoriesToSelect';
   export default {
     name: 'CategoriesToSelect',
     props: {

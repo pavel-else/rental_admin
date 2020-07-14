@@ -135,7 +135,7 @@ import uploads from '@/functions/userUploads';
 import getExtention from '@/functions/getExtention';
 import Icons from './icons';
 import Palette from './palette';
-import CategoriesToSelect from './categoriesToSelect';
+import CategoriesToSelect from './CategoriesToSelect';
 import Photo from './photo';
 
 

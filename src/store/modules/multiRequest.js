@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 export default {
   actions: {
     multiRequest({ commit, getters }, queue) {
