@@ -57,10 +57,10 @@ export default {
 
       return new Promise((resolve, reject) => {
         const queue = [
-          { cmd: 'newCategory', value: category },
+          { cmd: 'newCategory', value: { ...category } },
           { cmd: 'getCategories' },
         ];
-
+        console.log("QUEUE", queue);
         const url = getters.url;
         const token = localStorage.getItem('user-token');
 
@@ -83,7 +83,7 @@ export default {
         })
       }); 
     },
-    changeCategoriesTree({ getters, commit }, tree) {
+    changeCategoriesTree({ getters }, tree) {
       console.log('dispatch: setCategories');
 
       // Для более удобной работы на сервере, и чтобы не передавать лишнюю информацию, 

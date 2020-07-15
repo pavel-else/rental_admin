@@ -48,7 +48,7 @@
           <b-button class="btn" variant="outline-danger" @click="showNewCategory = !showNewCategory">Отмена</b-button>
         </b-col>
         <b-col v-if="!showNewCategory">
-          <b-button class="btn" variant="outline-success" @click="newCategory()">Добавить категорию</b-button>
+          <b-button class="btn" variant="outline-success" @click="newCategory">Добавить категорию</b-button>
         </b-col>
       </b-row>
     </b-card>
@@ -101,7 +101,7 @@
       save() {
         const category = {
           name: this.newCategoryName,
-          appId: this.$store.getters.activeRentalPoint
+          appId: this.$store.getters.activeRentalPointId
         };
 
         this.$store.dispatch('newCategory', category);
@@ -117,7 +117,7 @@
           return false;
         }
 
-        this.$store.dispatch('deleteCategory', { idRent: category.id_rent, appId: this.$store.getters.activeRentalPoint });
+        this.$store.dispatch('deleteCategory', { idRent: category.id_rent, appId: this.$store.getters.activeRentalPointId });
       },
       changeCategory(category) {
         this.show = 'details';
